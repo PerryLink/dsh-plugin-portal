@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PerryLink DSH Plugin Portal</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --panel-2: #1d212b;
+    --border: #2a2f3a;
+    --text: #e6e8ee;
+    --muted: #9aa3b2;
+    --accent: #ff9f43;
+    --link: #7fb3ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+  }
+  header {
+    padding: 40px 24px 24px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  header h1 { margin: 0 0 8px; font-size: 28px; }
+  header h1 .zh { color: var(--muted); font-weight: 400; }
+  header p { margin: 0; color: var(--muted); font-size: 15px; }
+  .stats {
+    margin-top: 14px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .stats strong { color: var(--accent); }
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+  .group { margin-bottom: 32px; }
+  .group h2 {
+    font-size: 18px;
+    margin: 0 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    color: var(--accent);
+  }
+  .group h2 .en { color: var(--muted); font-weight: 400; font-size: 14px; margin-left: 6px; }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .card:hover { border-color: var(--accent); background: var(--panel-2); }
+  .head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .name { color: var(--link); font-weight: 600; text-decoration: none; font-size: 15px; word-break: break-all; }
+  .name:hover { text-decoration: underline; }
+  .star { color: var(--accent); font-weight: 700; white-space: nowrap; }
+  .desc { margin: 0; color: var(--muted); font-size: 13px; flex: 1; }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; }
+  .badges img { height: 20px; display: block; }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 24px;
+    border-top: 1px solid var(--border);
+  }
+  footer a { color: var(--link); }
+</style>
+</head>
+<body>
+<header>
+  <h1>PerryLink DSH Plugin Portal <span class="zh">· 插件门户</span></h1>
+  <p>One-page directory of the @perrylink DeepSeek Harness plugin ecosystem · DeepSeek Harness 插件生态总览</p>
+  <div class="stats">Showing <strong id="count">…</strong> plugins &amp; kit · 数据源自 data/repos.json</div>
+</header>
+<main id="grid"></main>
+<footer>
+  Rendered from <code>data/repos.json</code> (synced from <a href="https://github.com/PerryLink/dsh-plugin-kit" target="_blank" rel="noopener">dsh-plugin-kit</a>).
+  Star badges are live shields.io images; no self-hosted assets.
+</footer>
+<script>
+'use strict';
+
+// One-line descriptions (card blurb). Kept here because the roster source
+// (dsh-plugin-kit/data/repos.json) carries no description field.
+const DESCRIPTIONS = {
+  'dsh-plugin-kit': 'Plugin-ecosystem tooling kit: sync, gates, scoring and verification',
+  'dsh-memento': 'Approval-gated cross-session memory: ctx.memory seam + SQLite + memory tool',
+  'dsh-checkpoint-rewind': 'Claude Code /rewind-equivalent: snapshots, session forks, one-shot restore',
+  'dsh-composer-history': 'Terminal-style input history for the web composer: arrows, Ctrl+R search',
+  'dsh-background-agents': 'Durable background child agents with a Web UI sidebar, messaging and interrupt',
+  'dsh-session-pin': 'Pin sessions in the Web sidebar with durable ordering',
+  'dsh-session-sync': 'Sync sessions across DSH restarts and machines',
+  'dsh-auto-review': 'Second-model auto-review on the approval chain, fail-closed by default',
+  'dsh-permission-rules': 'Claude Code-style declarative allow/deny/ask permission rules with audit',
+  'dsh-defend': 'Prompt-injection and adversarial-input defense for DSH sessions',
+  'dsh-mask': 'Mask and redact secrets and sensitive data in tool input/output',
+  'dsh-skill-pack-security': 'Security-audit skill pack: secret scan, dependency and supply-chain review',
+  'dsh-doublecheck': 'Engineering-discipline guard: requirements grill, test gates, adversary review',
+  'dsh-data-quality': 'Data-quality and sanity checks for agent outputs',
+  'dsh-test-drive': 'Test-driven development workflow driver for agent coding',
+  'dsh-score': 'Score and grade agent runs against quality signals',
+  'dsh-industry-research': 'Industry and market research agent',
+  'dsh-fund-research': 'Fund, company and investment research agent',
+  'dsh-research-report': 'Structured research-report generation from findings',
+  'dsh-library': 'Research library and knowledge base for collected findings',
+  'dsh-mcp-panel': 'Read-only MCP runtime panel: /mcp command + Settings tab with status, tools and errors',
+  'dsh-claude-move': 'Migrate Claude Code sessions, memory, skills and CLAUDE.md into DSH',
+  'dsh-lsp-actions': 'LSP diagnostics, formatting, completion, code actions and rename over language servers',
+  'dsh-local-ai': 'Local AI provider integration (Ollama and friends)',
+  'dsh-github': 'GitHub PR/issues integration for DSH, every write gated by approval',
+  'dsh-translate': 'Documentation translation workflow for the plugin family',
+  'dsh-click': 'Desktop click/UI automation integration',
+  'dsh-talk': 'Voice and speech conversation interface',
+  'dsh-draw': 'Diagram and drawing generation',
+  'dsh-budget': 'Token and cost budget tracking for sessions',
+  'dsh-observe': 'Session observability and event inspection',
+  'dsh-fast': 'Latency and performance optimization helpers',
+  'dsh-output-styles': 'Claude Code outputStyles-equivalent runtime style switching',
+  'dsh-plugin-guide': 'Plugin-development knowledge base as an on-demand agent skill',
+};
+
+const GROUP_EN = {
+  '基建': 'Infra',
+  '会话': 'Session',
+  '安全': 'Security',
+  '质量': 'Quality',
+  '研究': 'Research',
+  '集成': 'Integration',
+  '桌面': 'Desktop',
+  '观测': 'Observability',
+  'UX': 'UX',
+  '生态': 'Ecosystem',
+};
+
+function starsBadge(name) {
+  return `https://img.shields.io/github/stars/PerryLink/${name}.svg?style=flat-square&label=stars&color=orange`;
+}
+
+function ratingBadge(star) {
+  return star === null
+    ? 'https://img.shields.io/badge/rating-n%2Fa-lightgrey'
+    : `https://img.shields.io/badge/rating-${star}-orange`;
+}
+
+function card(repo) {
+  const article = document.createElement('article');
+  article.className = 'card';
+
+  const head = document.createElement('div');
+  head.className = 'head';
+
+  const link = document.createElement('a');
+  link.className = 'name';
+  link.href = repo.github;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.textContent = repo.name;
+
+  const star = document.createElement('span');
+  star.className = 'star';
+  star.textContent = repo.star === null ? '\u2605 \u2014' : `\u2605 ${repo.star}`;
+
+  head.appendChild(link);
+  head.appendChild(star);
+
+  const desc = document.createElement('p');
+  desc.className = 'desc';
+  desc.textContent = DESCRIPTIONS[repo.name] || 'DSH plugin.';
+
+  const badges = document.createElement('div');
+  badges.className = 'badges';
+
+  const starsImg = document.createElement('img');
+  starsImg.loading = 'lazy';
+  starsImg.src = starsBadge(repo.name);
+  starsImg.alt = `${repo.name} GitHub stars`;
+
+  const ratingImg = document.createElement('img');
+  ratingImg.loading = 'lazy';
+  ratingImg.src = ratingBadge(repo.star);
+  ratingImg.alt = `${repo.name} rating`;
+
+  badges.appendChild(starsImg);
+  badges.appendChild(ratingImg);
+
+  article.appendChild(head);
+  article.appendChild(desc);
+  article.appendChild(badges);
+  return article;
+}
+
+async function main() {
+  const grid = document.getElementById('grid');
+  const count = document.getElementById('count');
+  const res = await fetch('data/repos.json');
+  if (!res.ok) throw new Error(`data/repos.json returned ${res.status}`);
+  const data = await res.json();
+  const repos = data.repos;
+  count.textContent = String(repos.length);
+
+  const groups = [];
+  const byGroup = new Map();
+  for (const repo of repos) {
+    if (!byGroup.has(repo.group)) {
+      byGroup.set(repo.group, []);
+      groups.push(repo.group);
+    }
+    byGroup.get(repo.group).push(repo);
+  }
+
+  for (const group of groups) {
+    const section = document.createElement('section');
+    section.className = 'group';
+
+    const heading = document.createElement('h2');
+    heading.textContent = group;
+    const en = document.createElement('span');
+    en.className = 'en';
+    en.textContent = GROUP_EN[group] || '';
+    heading.appendChild(en);
+    section.appendChild(heading);
+
+    const cards = document.createElement('div');
+    cards.className = 'cards';
+    for (const repo of byGroup.get(group)) cards.appendChild(card(repo));
+    section.appendChild(cards);
+
+    grid.appendChild(section);
+  }
+}
+
+main().catch((error) => {
+  document.getElementById('grid').textContent =
+    `Failed to load the roster: ${error.message}. Serve this directory over HTTP (e.g. \`python -m http.server\`) to view the portal.`;
+});
+</script>
+</body>
+</html>
