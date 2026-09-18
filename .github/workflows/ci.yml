@@ -1,0 +1,32 @@
+name: CI
+
+# The portal is a zero-dependency static site: there is no package manager step,
+# no build step, and no artifact to publish. The gate is the whole pipeline.
+# It self-asserts that it imports nothing but `node:` builtins, so this workflow
+# never installs anything.
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Roster contract, inline-script parse/run, blurb coverage, badge owner
+      # derivation, README count governance. The upstream-parity check reports
+      # `skip` here because the sibling dsh-plugin-kit checkout does not exist on
+      # this runner - it must not fail CI for something the runner cannot fix.
+      - name: Portal gate
+        run: node scripts/verify-portal.mjs

@@ -1,5 +1,5 @@
 {
-  "_source": "Synced copy of dsh-plugin-kit/data/repos.json (https://github.com/PerryLink/dsh-plugin-kit). That file is the source of truth for the roster and star counts; re-copy it here to refresh this portal.",
+  "_source": "Synced copy of dsh-plugin-kit/data/repos.json (https://github.com/PerryLink/dsh-plugin-kit). That file is the source of truth for the roster and star counts; re-copy it here to refresh this portal. Upstream sha256: 439a43e2aa2d7bd70b8c2c748161a8dae1e6e4e1a4b4308b6fa7e0099f1ee4ec (recorded 2026-09-18; scripts/verify-portal.mjs fails when the upstream file no longer hashes to this, or when the two rosters stop matching verbatim).",
   "updatedAt": "2026-08-26",
   "note": "Registry of the @perrylink dsh plugin ecosystem (33 plugin repos + this kit). Star counts as of 2026-08. Consumed by the portal, sync scripts, and score pipelines.",
   "repos": [
