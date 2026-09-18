@@ -149,8 +149,15 @@ const GROUP_EN = {
   '生态': 'Ecosystem',
 };
 
-function starsBadge(name) {
-  return `https://img.shields.io/github/stars/PerryLink/${name}.svg?style=flat-square&label=stars&color=orange`;
+// The stars badge must point at the repo's real owner: the roster carries
+// non-PerryLink entries (e.g. pan17/dsh-wechat), and a hardcoded owner renders
+// a 404 badge for every one of them.
+function ownerOf(repo) {
+  return new URL(repo.github).pathname.split('/').filter(Boolean)[0];
+}
+
+function starsBadge(repo) {
+  return `https://img.shields.io/github/stars/${ownerOf(repo)}/${repo.name}.svg?style=flat-square&label=stars&color=orange`;
 }
 
 function ratingBadge(star) {
@@ -189,7 +196,7 @@ function card(repo) {
 
   const starsImg = document.createElement('img');
   starsImg.loading = 'lazy';
-  starsImg.src = starsBadge(repo.name);
+  starsImg.src = starsBadge(repo);
   starsImg.alt = `${repo.name} GitHub stars`;
 
   const ratingImg = document.createElement('img');
