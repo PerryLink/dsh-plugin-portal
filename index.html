@@ -71,6 +71,7 @@
   .name:hover { text-decoration: underline; }
   .star { color: var(--accent); font-weight: 700; white-space: nowrap; }
   .desc { margin: 0; color: var(--muted); font-size: 13px; flex: 1; }
+  .desc.missing { color: var(--accent); font-style: italic; }
   .badges { display: flex; gap: 8px; flex-wrap: wrap; }
   .badges img { height: 20px; display: block; }
   footer {
@@ -189,7 +190,17 @@ function card(repo) {
 
   const desc = document.createElement('p');
   desc.className = 'desc';
-  desc.textContent = DESCRIPTIONS[repo.name] || 'DSH plugin.';
+  // The roster (data/repos.json, synced from dsh-plugin-kit) can gain an entry
+  // before its blurb lands in DESCRIPTIONS. Surface that instead of silently
+  // rendering a placeholder that looks like real copy.
+  const description = DESCRIPTIONS[repo.name];
+  if (description === undefined) {
+    console.warn(`dsh-plugin-portal: no description for "${repo.name}" - the roster is ahead of DESCRIPTIONS; add a blurb and register it in scripts/verify-portal.mjs`);
+    desc.classList.add('missing');
+    desc.textContent = 'description not synced';
+  } else {
+    desc.textContent = description;
+  }
 
   const badges = document.createElement('div');
   badges.className = 'badges';
