@@ -9,6 +9,7 @@
 ## 生态总览 / Ecosystem overview
 
 The portal renders the complete registry tracked by [`dsh-plugin-kit/data/repos.json`](https://github.com/PerryLink/dsh-plugin-kit/blob/main/data/repos.json): every roster entry, plugins plus the `dsh-plugin-kit` infra repo. Every card shows the repo **name**, a **one-line description**, its **★ count**, two **shields.io badges** (live GitHub stars + a static rating badge), and the **GitHub link**. The authoritative counts are printed by `node scripts/verify-portal.mjs` (the README deliberately carries no frozen number).
+[![dshfind](https://dshfind.com/api/badge/PerryLink/dsh-plugin-portal?metric=downloads)](https://dshfind.com/plugins/PerryLink/dsh-plugin-portal?ref=badge)
 
 本门户渲染 `dsh-plugin-kit/data/repos.json` 记录的完整清单（全部插件仓库 + `dsh-plugin-kit` 基建仓库）。每张卡片展示仓库**名称**、**一句话简介**、**★ 数**、两个 **shields.io 徽章**（实时 GitHub stars + 静态评分徽章）与 **GitHub 链接**。**权威计数由 `node scripts/verify-portal.mjs` 打印**，README 刻意不写死数字。
 
