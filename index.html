@@ -72,8 +72,11 @@
   .star { color: var(--accent); font-weight: 700; white-space: nowrap; }
   .desc { margin: 0; color: var(--muted); font-size: 13px; flex: 1; }
   .desc.missing { color: var(--accent); font-style: italic; }
-  .badges { display: flex; gap: 8px; flex-wrap: wrap; }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   .badges img { height: 20px; display: block; }
+  .status { font-size: 11px; font-weight: 700; letter-spacing: .02em; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+  .status.frozen { background: #16324a; color: #9ecbff; border: 1px solid #274d70; }
+  .status.retired { background: #47201f; color: #ffb4ae; border: 1px solid #6d3230; }
   footer {
     text-align: center;
     color: var(--muted);
@@ -135,6 +138,14 @@ const DESCRIPTIONS = {
   'dsh-fast': 'Latency and performance optimization helpers',
   'dsh-output-styles': 'Claude Code outputStyles-equivalent runtime style switching',
   'dsh-plugin-guide': 'Plugin-development knowledge base as an on-demand agent skill',
+  'dsh-autotier': 'Automatic strong/cheap model-tier routing with deterministic risk guards and a /tier command',
+  'dsh-cert-mcp': 'Read-only MCP server exposing the certification registry: grades, snapshots and five-dimension evidence',
+  'dsh-laya': 'Laya typed decisions (noul/choice/score) as a first-class Cordis service and model-visible tools',
+  'dsh-plugin-doctor': 'Zero-dependency static + sandbox smoke detector for DSH plugins',
+  'dsh-plugin-upgrade': 'One-package, one-corridor-index plugin upgrade skill: routes a repository to the matching closed corridor card',
+  'dsh-reach': 'Multi-channel approval/question bridge: WeChat/Telegram/Feishu, session console',
+  'dsh-team-rooms': 'Cross-session team rooms: shared message bus, task board and timeline',
+  'dsh-ticktick': 'TickTick/Dida365 task bridge: session-header panel plus eleven agent tools',
 };
 
 const GROUP_EN = {
@@ -204,6 +215,19 @@ function card(repo) {
 
   const badges = document.createElement('div');
   badges.className = 'badges';
+
+  // Maintenance status, straight from the roster. `active` is the default and
+  // gets no chip: the point of the chip is that a reader cannot mistake a
+  // frozen or retired package for actively developed work.
+  if (repo.status === 'frozen' || repo.status === 'retired') {
+    const chip = document.createElement('span');
+    chip.className = `status ${repo.status}`;
+    chip.textContent = repo.status === 'frozen' ? '\u{1F9CA} FROZEN' : '\u{1F6AB} RETIRED';
+    chip.title = repo.status === 'frozen'
+      ? 'No new features; only a real breakage gets fixed.'
+      : 'The host implements this natively and the package is npm-deprecated. Not installable from dsh-kit.';
+    badges.appendChild(chip);
+  }
 
   const starsImg = document.createElement('img');
   starsImg.loading = 'lazy';
