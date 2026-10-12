@@ -1,7 +1,7 @@
 {
-  "_source": "Synced copy of dsh-plugin-kit/data/repos.json (https://github.com/PerryLink/dsh-plugin-kit). That file is the source of truth for the roster, the star counts and each entry's maintenance `status`; re-copy it here to refresh this portal. Upstream sha256: f4052a679e97bae2064d0053866557b138ae80244b07bdc5c17f4f12361e4b6c (recorded 2026-10-12; scripts/verify-portal.mjs fails when the upstream file no longer hashes to this, or when the two rosters stop matching verbatim).",
+  "_source": "Synced copy of dsh-plugin-kit/data/repos.json (https://github.com/PerryLink/dsh-plugin-kit). That file is the source of truth for the roster, the star counts and each entry's maintenance `status`; re-copy it here to refresh this portal. Upstream sha256: 7f3b07d1ca59fc13d6334ea64d78081f9a4f8ba78fd089557d6905dabc377c9d (recorded 2026-10-12; scripts/verify-portal.mjs fails when the upstream file no longer hashes to this, or when the two rosters stop matching verbatim).",
   "updatedAt": "2026-10-12",
-  "note": "Registry of the @perrylink dsh plugin ecosystem (41 plugin repos + this kit). Star counts re-read on 2026-10-07; `status` refreshed on 2026-10-12 (dsh-memento unfrozen, so it is active again). `status` is the maintenance state: active, frozen (no new features, breakage fixes only) or retired (npm-deprecated, not installable from dsh-kit). Consumed by the portal, sync scripts, and score pipelines.",
+  "note": "Registry of the @perrylink dsh plugin ecosystem (41 plugin repos + this kit). Star counts re-read on 2026-10-07; `status` re-derived on 2026-10-12. `status` is the maintenance state: active, frozen (no new features, breakage fixes only) or retired (npm-deprecated, not installable from dsh-kit). Consumed by the portal, sync scripts, and score pipelines.",
   "repos": [
     {
       "name": "dsh-plugin-kit",
