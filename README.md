@@ -193,3 +193,11 @@ This project is part of the DeepSeek Harness plugin family from [PerryLink](http
 | **[dsh-team-rooms](https://github.com/PerryLink/dsh-team-rooms)** | 🚫 RETIRED — see the repo README |
 
 </details>
+
+## Adoption levels (non-official)
+
+The ecosystem is moving to three **adoption depths**, not grades: **DSH-ENTRY** (compatibility baseline — can it be installed and booted?), **DSH-FLOW** (recommended usability — can a user install, configure, recover, upgrade and uninstall it?) and **DSH-BOOST** (Cordis practice — is it measurably cheaper?). They are not certification, not a ranking, and not endorsed by DeepSeek.
+
+- Public teaching copy: [dsh-plugin-guide/guide/standards.md](https://github.com/PerryLink/dsh-plugin-guide/blob/main/guide/standards.md)
+- `dsh-plugin-doctor` exposes an ENTRY projection in its JSON report; `dsh-plugin-certification` explains why its A–D grades are orthogonal to the levels.
+- The machine-readable `spec/levels.json` and the audit tool live in the private `dsh-standards` project (draft; ask the maintainer).
