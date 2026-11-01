@@ -1,0 +1,13 @@
+{
+  "name": "dsh-plugin-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Zero-dependency static portal for the @perrylink DeepSeek Harness plugin ecosystem",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node scripts/verify-portal.mjs"
+  }
+}

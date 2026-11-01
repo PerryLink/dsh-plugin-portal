@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attestation verify · 评价记录查验 — PerryLink DSH Plugin Portal</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --panel-2: #1d212b;
+    --border: #2a2f3a;
+    --text: #e6e8ee;
+    --muted: #9aa3b2;
+    --accent: #ff9f43;
+    --link: #7fb3ff;
+    --ok: #7fd1a8;
+    --warn: #ffb86b;
+    --bad: #ff8d86;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+  }
+  header {
+    padding: 36px 24px 22px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  header h1 { margin: 0 0 8px; font-size: 26px; }
+  header h1 .zh { color: var(--muted); font-weight: 400; }
+  header p { margin: 0 auto; max-width: 780px; color: var(--muted); font-size: 14px; }
+  .disclaimer {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 5px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text);
+    font-size: 13px;
+    letter-spacing: .01em;
+  }
+  main { max-width: 900px; margin: 0 auto; padding: 24px; }
+  .lookup {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .lookup label { display: block; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  input[type="text"] {
+    flex: 1 1 260px;
+    min-width: 0;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 10px 12px;
+    font: inherit;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  input[type="text"]:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  button {
+    font: inherit;
+    font-weight: 700;
+    color: #1a1208;
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  button:hover { filter: brightness(1.08); }
+  button.linkish {
+    background: none;
+    border: none;
+    color: var(--link);
+    padding: 0;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .hint { margin: 10px 0 0; color: var(--muted); font-size: 12px; }
+  .result { margin-top: 20px; }
+  .empty, .error { color: var(--muted); font-size: 14px; margin: 0; }
+  .error { color: var(--bad); }
+  .record {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .record-head { padding: 18px; border-bottom: 1px solid var(--border); background: var(--panel-2); }
+  .record-id { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 18px; font-weight: 700; word-break: break-all; }
+  .verdict { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .chip {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .chip.valid { color: var(--ok); border-color: #2f5b47; background: #14261f; }
+  .chip.stale { color: var(--warn); border-color: #6b4a2a; background: #2b1f13; }
+  .chip.withdrawn { color: var(--bad); border-color: #6d3230; background: #2b1716; }
+  .chip.inactive { color: var(--muted); border-color: var(--border); background: var(--bg); }
+  .verdict-note { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
+  .verdict-note strong { color: var(--text); }
+  .section { padding: 16px 18px; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+  .section h2 { margin: 0 0 10px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+  .fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 8px 18px; }
+  .field { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .field .k { color: var(--muted); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; }
+  .field .v { font-size: 14px; word-break: break-word; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .none { color: var(--muted); font-style: italic; }
+  ul.plain { margin: 0; padding-left: 18px; }
+  ul.plain li { margin: 2px 0; }
+  .evidence { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .evidence a, .evidence span {
+    display: inline-block;
+    font-size: 13px;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg);
+    color: var(--link);
+    text-decoration: none;
+    word-break: break-all;
+  }
+  .evidence span { color: var(--muted); }
+  .evidence a:hover { border-color: var(--accent); text-decoration: underline; }
+  .disclaimer-box {
+    margin: 0;
+    padding: 10px 12px;
+    border-left: 3px solid var(--accent);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+  }
+  .note { margin: 18px 0 0; color: var(--muted); font-size: 12px; }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 24px;
+  }
+  footer a { color: var(--link); }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Attestation verify <span class="zh">· 评价记录查验</span></h1>
+  <p>Look up a DSH attestation ID in the portal's read-only mirror and read its subject, scope, status, evidence and disclaimer. 输入 attestationId，查看主体、范围、状态、证据与免责声明。</p>
+  <p class="disclaimer">非官方 · 非认证 · 非安全审计 / Not official, not a certification, not a security audit.</p>
+</header>
+<main>
+  <form class="lookup" id="lookup">
+    <label for="attestation-id">Attestation ID</label>
+    <div class="row">
+      <input id="attestation-id" name="id" type="text" autocomplete="off" spellcheck="false" placeholder="DSH-ATT-2026-001" aria-describedby="hint">
+      <button type="submit">Verify</button>
+    </div>
+    <p class="hint" id="hint">Read-only lookup against <code>data/attestations.json</code>, a mirror of the standard-repository index. Example: <button type="button" class="linkish" id="example">DSH-ATT-2026-001</button></p>
+  </form>
+
+  <section class="result" id="result" aria-live="polite">
+    <p class="empty">Enter an attestation ID to read its record. 输入 attestationId 查看记录。</p>
+  </section>
+
+  <p class="note">This page only renders a mirrored record. It does not issue, suspend, revoke, validate or re-grade an attestation, and it never converts a grade into an adoption level. 本页只读展示镜像记录，不签发 / 不撤销 / 不认证，也不把评级换算成 ENTRY / FLOW / BOOST 层。</p>
+</main>
+<footer>
+  Source: <code>data/attestations.json</code> (mirror of <code>publish/attestations/index.json</code>) ·
+  <a href="index.html">Back to the plugin portal</a> ·
+  非官方 · 非认证 · 非安全审计
+</footer>
+<script>
+'use strict';
+
+const INDEX_URL = 'data/attestations.json';
+const EXAMPLE_ID = 'DSH-ATT-2026-001';
+const DISCLAIMER = '非官方 · 非认证 · 非安全审计 / Not official, not a certification, not a security audit.';
+const STATUS_TEXT = {
+  valid: 'in date',
+  stale: 'stale',
+  withdrawn: 'withdrawn',
+};
+
+// YYYY-MM-DD is treated as the UTC end of that day: a record is valid through
+// the whole day printed as `expiresAt`. An unparsable or missing date never
+// becomes "valid" - the page fails closed.
+function parseExpiry(value) {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+  const time = Date.parse(`${value}T23:59:59Z`);
+  if (!Number.isFinite(time)) return null;
+  return new Date(time).toISOString().slice(0, 10) === value ? time : null;
+}
+
+// Withdrawn wins over stale: a revoked record is never rendered as in date,
+// even when its expiresAt is still in the future.
+function classify(entry, nowMs) {
+  const now = Number.isFinite(nowMs) ? nowMs : Date.now();
+  const status = (entry && typeof entry.status === 'string' && entry.status) || 'unknown';
+  const expiresAt = (entry && typeof entry.expiresAt === 'string' && entry.expiresAt) || null;
+  const withdrawn =
+    status === 'withdrawn' ||
+    status === 'revoked' ||
+    Boolean(entry && entry.withdrawn === true);
+  const expiry = parseExpiry(expiresAt);
+  const expired = status === 'expired' || (expiry !== null && now > expiry);
+  let state = 'inactive';
+  if (withdrawn) state = 'withdrawn';
+  else if (expired) state = 'stale';
+  else if (status === 'active' && expiry !== null) state = 'valid';
+  return {
+    status,
+    state,
+    withdrawn,
+    expired,
+    // "valid" here means "active and not expired"; it is not a certification,
+    // an audit, or an endorsement.
+    valid: state === 'valid',
+  };
+}
+
+function findAttestation(index, query) {
+  const wanted = String(query === undefined || query === null ? '' : query).trim();
+  if (wanted === '') return null;
+  const list = index && Array.isArray(index.attestations) ? index.attestations : [];
+  const exact = list.find((item) => item && item.attestationId === wanted);
+  if (exact) return exact;
+  const upper = wanted.toUpperCase();
+  return list.find((item) => item && String(item.attestationId).toUpperCase() === upper) || null;
+}
+
+function recordFor(index, entry) {
+  if (!index || !entry || typeof entry.attestationId !== 'string') return null;
+  const records = index.records;
+  if (!records || typeof records !== 'object') return null;
+  return Object.prototype.hasOwnProperty.call(records, entry.attestationId) ? records[entry.attestationId] : null;
+}
+
+function el(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined && text !== null) node.textContent = String(text);
+  return node;
+}
+
+function field(label, value) {
+  const row = el('div', 'field');
+  row.appendChild(el('span', 'k', label));
+  const cell = el('span', 'v');
+  const items = Array.isArray(value) ? value : [value];
+  let wrote = false;
+  for (const item of items) {
+    if (item === null || item === undefined || item === '') continue;
+    if (typeof item === 'string') {
+      cell.appendChild(el('span', '', item));
+    } else {
+      cell.appendChild(item);
+    }
+    wrote = true;
+  }
+  if (!wrote) cell.appendChild(el('span', 'none', '—'));
+  row.appendChild(cell);
+  return row;
+}
+
+function link(url, text) {
+  const safe = typeof url === 'string' && /^https:\/\//i.test(url) ? url : null;
+  if (safe === null) return el('span', 'none', text || '—');
+  const anchor = el('a', '', text || safe);
+  anchor.href = safe;
+  anchor.target = '_blank';
+  anchor.rel = 'noopener noreferrer';
+  return anchor;
+}
+
+function evidenceLinks(record) {
+  const items = record && Array.isArray(record.evidence) ? record.evidence : [];
+  return items.map((item) => {
+    const label = `${item.id || '?'} ${item.result || '?'}`;
+    const url = typeof item.url === 'string' && /^https:\/\//i.test(item.url) ? item.url : null;
+    const node = el(url ? 'a' : 'span', 'evidence-item', label);
+    if (url) {
+      node.href = url;
+      node.target = '_blank';
+      node.rel = 'noopener noreferrer';
+    }
+    if (item.note) node.title = item.note;
+    return node;
+  });
+}
+
+function section(title, children) {
+  const box = el('section', 'section');
+  box.appendChild(el('h2', '', title));
+  const body = el('div', 'fields');
+  for (const child of children) body.appendChild(child);
+  box.appendChild(body);
+  return box;
+}
+
+function disclaimerText(record) {
+  const own = record && typeof record.disclaimer === 'string' && record.disclaimer.trim() !== '' ? record.disclaimer.trim() : '';
+  return own === '' ? DISCLAIMER : `${own} · ${DISCLAIMER}`;
+}
+
+function render(entry, record, nowMs) {
+  const view = classify(entry, nowMs);
+  const subject = (record && record.subject) || {};
+  const scope = (record && record.scope) || {};
+  const repo = subject.repo || entry.repo || '—';
+  const version = subject.version || entry.version || '—';
+  const commit = subject.commit || null;
+
+  const root = el('article', 'record');
+
+  const head = el('div', 'record-head');
+  head.appendChild(el('div', 'record-id', entry.attestationId || '—'));
+  const verdict = el('div', 'verdict');
+  verdict.appendChild(el('span', `chip ${view.state}`, STATUS_TEXT[view.state] || view.status));
+  if (view.state !== 'inactive') verdict.appendChild(el('span', 'chip inactive', `declared ${view.status}`));
+  head.appendChild(verdict);
+
+  let note;
+  if (view.state === 'valid') {
+    note = 'This record is active and has not expired. In date is not a certification, not a security audit and not an endorsement.';
+  } else if (view.state === 'stale') {
+    note = 'STALE — this record has expired and must not be read as valid or as a pass. 已过期，不得视为有效或通过。';
+  } else if (view.state === 'withdrawn') {
+    note = 'WITHDRAWN — this record was withdrawn and must not be read as valid or as a pass. 已撤回，不得视为有效或通过。';
+  } else {
+    note = `Declared status “${view.status}” — not active, so it is not valid and must not be read as a pass. 非 active 状态，不得视为有效或通过。`;
+  }
+  head.appendChild(el('p', 'verdict-note', note));
+  root.appendChild(head);
+
+  root.appendChild(section('Record', [
+    field('Subject', `${repo}@${version}${commit ? ` · ${commit}` : ''}`),
+    field('Grade', record && record.grade ? `${record.grade} (quality grade A–D; orthogonal to ENTRY/FLOW/BOOST)` : '—'),
+    field('Claim level (claimLevel)', (record && record.claimLevel) || entry.claimLevel || '—'),
+    field('Declared status', view.status),
+    field('Effective status', STATUS_TEXT[view.state] || view.status),
+    field('Issued at', entry.issuedAt || (record && record.issuedAt) || '—'),
+    field('Expires at', entry.expiresAt || (record && record.expiresAt) || '—'),
+    field('Self-assessed', record && typeof record.selfAssessed === 'boolean' ? (record.selfAssessed ? 'yes — not an independent third-party review' : 'no') : '—'),
+    field('Assessor', record && record.assessor ? `${record.assessor.handle || '—'} (${record.assessor.role || '—'})` : '—'),
+    field('Verify URL', link(entry.verifyUrl || (record && record.verifyUrl), entry.verifyUrl || (record && record.verifyUrl))),
+    field('Source file', entry.file || '—'),
+  ]));
+
+  root.appendChild(section('Scope', [
+    field('Dimensions', Array.isArray(scope.dimensions) ? scope.dimensions.join(', ') : '—'),
+    field('Excluded', Array.isArray(scope.excluded) ? scope.excluded.join(' · ') : '—'),
+    field('Platform', scope.platform || '—'),
+    field('dsh', scope.dsh || '—'),
+    field('cordis', scope.cordis || '—'),
+  ]));
+
+  const evidence = evidenceLinks(record);
+  const evidenceSection = el('section', 'section');
+  evidenceSection.appendChild(el('h2', '', 'Evidence'));
+  if (evidence.length === 0) {
+    evidenceSection.appendChild(el('p', 'none', '—'));
+  } else {
+    const list = el('ul', 'evidence');
+    for (const item of evidence) {
+      const li = el('li');
+      li.appendChild(item);
+      list.appendChild(li);
+    }
+    evidenceSection.appendChild(list);
+  }
+  root.appendChild(evidenceSection);
+
+  const disclaimer = el('p', 'disclaimer-box', disclaimerText(record));
+  const disclaimerFields = el('div', 'fields');
+  disclaimerFields.appendChild(disclaimer);
+  const disclaimerSection = el('section', 'section');
+  disclaimerSection.appendChild(el('h2', '', 'Disclaimer'));
+  disclaimerSection.appendChild(disclaimerFields);
+  root.appendChild(disclaimerSection);
+
+  const notClaimed = record && Array.isArray(record.notClaimed) ? record.notClaimed : [];
+  if (notClaimed.length > 0) {
+    const list = el('ul', 'plain');
+    for (const item of notClaimed) list.appendChild(el('li', '', item));
+    const box = el('section', 'section');
+    box.appendChild(el('h2', '', 'Not claimed'));
+    box.appendChild(list);
+    root.appendChild(box);
+  }
+
+  const history = record && Array.isArray(record.history) ? record.history : [];
+  if (history.length > 0) {
+    const list = el('ul', 'plain');
+    for (const item of history) {
+      const when = item && item.at ? item.at : '—';
+      const what = item && item.status ? item.status : '—';
+      const why = item && item.reason ? ` — ${item.reason}` : '';
+      list.appendChild(el('li', '', `${when}: ${what}${why}`));
+    }
+    const box = el('section', 'section');
+    box.appendChild(el('h2', '', 'History'));
+    box.appendChild(list);
+    root.appendChild(box);
+  }
+
+  const scopeNote = el('p', 'note', 'The portal only displays this mirrored record. It does not verify the evidence, compute a level, or decide whether the record should be trusted.');
+  root.appendChild(scopeNote);
+  return root;
+}
+
+let indexPromise = null;
+function loadIndex() {
+  if (indexPromise === null) {
+    indexPromise = fetch(INDEX_URL)
+      .then((response) => {
+        if (!response.ok) throw new Error(`${INDEX_URL} returned ${response.status}`);
+        return response.json();
+      })
+      .catch((error) => {
+        indexPromise = null;
+        throw error;
+      });
+  }
+  return indexPromise;
+}
+
+function showNotices(nodes) {
+  const result = document.getElementById('result');
+  if (!result) return;
+  result.textContent = '';
+  for (const node of nodes) result.appendChild(node);
+}
+
+async function verify(rawQuery) {
+  const query = String(rawQuery === undefined || rawQuery === null ? '' : rawQuery).trim();
+  if (query === '') {
+    showNotices([el('p', 'empty', 'Enter an attestation ID to read its record. 输入 attestationId 查看记录。')]);
+    return;
+  }
+  try {
+    const index = await loadIndex();
+    const entry = findAttestation(index, query);
+    if (entry === null) {
+      showNotices([
+        el('p', 'error', `No attestation "${query}" in the mirrored index. 镜像索引中没有这条记录。`),
+        el('p', 'note', 'Check the ID (format DSH-ATT-YYYY-NNN) or refresh data/attestations.json from the standard repository. 请核对 ID，或从标准仓刷新镜像。'),
+      ]);
+      return;
+    }
+    const record = recordFor(index, entry);
+    showNotices([render(entry, record, Date.now())]);
+  } catch (error) {
+    showNotices([
+      el('p', 'error', `Could not read ${INDEX_URL}: ${error.message}`),
+      el('p', 'note', 'Serve this directory over HTTP (for example `python -m http.server`) — file:// blocks fetching JSON. 请通过 HTTP 打开本页。'),
+    ]);
+  }
+}
+
+function init() {
+  const form = document.getElementById('lookup');
+  const input = document.getElementById('attestation-id');
+  const example = document.getElementById('example');
+  if (!form || !input) return;
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const query = input.value.trim();
+    if (query !== '') {
+      try {
+        history.replaceState(null, '', `?id=${encodeURIComponent(query)}`);
+      } catch (error) {
+        // file:// or a sandbox can refuse history updates; the lookup still works.
+      }
+    }
+    verify(query);
+  });
+  if (example) {
+    example.addEventListener('click', () => {
+      input.value = EXAMPLE_ID;
+      input.focus();
+      verify(EXAMPLE_ID);
+    });
+  }
+  let initial = '';
+  try {
+    initial = new URLSearchParams(location.search).get('id') || '';
+  } catch (error) {
+    initial = '';
+  }
+  if (initial !== '') {
+    input.value = initial;
+    verify(initial);
+  }
+}
+
+if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+  if (document.readyState === 'loading') window.addEventListener('DOMContentLoaded', init);
+  else init();
+}
+</script>
+</body>
+</html>

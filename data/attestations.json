@@ -1,0 +1,116 @@
+{
+  "schema": "dsh-attestation-index/1",
+  "updatedAt": "2026-11-01",
+  "source": {
+    "repo": "PerryLink/dsh-standards",
+    "path": "publish/attestations/index.json",
+    "url": "https://github.com/PerryLink/dsh-standards/blob/main/publish/attestations/index.json",
+    "mirroredAt": "2026-11-01",
+    "note": "Read-only mirror of the standard-repository attestation index. The portal never issues, edits, suspends, revokes or re-grades an attestation. records copies each attestation file referenced by `file` verbatim so verify.html can render scope / excluded / disclaimer / evidence without a network call."
+  },
+  "attestations": [
+    {
+      "attestationId": "DSH-ATT-2026-001",
+      "repo": "PerryLink/dsh-auto-review",
+      "version": "0.15.0",
+      "grade": "A",
+      "claimLevel": "self-reported",
+      "status": "draft",
+      "issuedAt": "2026-11-01",
+      "expiresAt": "2027-11-01",
+      "verifyUrl": "https://github.com/PerryLink/dsh-plugin-certification",
+      "file": "publish/attestations/DSH-ATT-2026-001.json"
+    }
+  ],
+  "records": {
+    "DSH-ATT-2026-001": {
+      "schema": "dsh-attestation/1",
+      "attestationId": "DSH-ATT-2026-001",
+      "subject": {
+        "repo": "PerryLink/dsh-auto-review",
+        "version": "0.15.0",
+        "commit": "0000000"
+      },
+      "grade": "A",
+      "claimLevel": "self-reported",
+      "status": "draft",
+      "issuedAt": "2026-11-01",
+      "expiresAt": "2027-11-01",
+      "scope": {
+        "dimensions": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E"
+        ],
+        "excluded": [
+          "security audit",
+          "runtime isolation",
+          "UI correctness",
+          "official endorsement"
+        ],
+        "platform": "linux-x64",
+        "dsh": "0.2.2-alpha.2",
+        "cordis": "4.0.6-alpha.1"
+      },
+      "scheme": {
+        "id": "dsh-certification",
+        "version": "1.0.0-rc.1"
+      },
+      "assessor": {
+        "handle": "PerryLink",
+        "role": "organizer",
+        "coi": [
+          "author of the subject plugin",
+          "self-assessed; not an independent third-party review"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "A",
+          "result": "PASS",
+          "url": "https://github.com/PerryLink/dsh-plugin-certification/blob/main/STANDARDS.md",
+          "note": "A-E evidence snapshot 2026-11-01"
+        },
+        {
+          "id": "B",
+          "result": "PASS",
+          "url": "https://github.com/PerryLink/dsh-plugin-certification/blob/main/STANDARDS.md"
+        },
+        {
+          "id": "C",
+          "result": "PASS",
+          "url": "https://github.com/PerryLink/dsh-plugin-certification/blob/main/STANDARDS.md"
+        },
+        {
+          "id": "D",
+          "result": "PASS",
+          "url": "https://github.com/PerryLink/dsh-plugin-certification/blob/main/STANDARDS.md"
+        },
+        {
+          "id": "E",
+          "result": "PASS",
+          "url": "https://github.com/PerryLink/dsh-plugin-certification/blob/main/STANDARDS.md"
+        }
+      ],
+      "selfAssessed": true,
+      "disclaimer": "非官方 · 非认证机构 · 非安全审计；A-D 是质量等级，不是 ENTRY/FLOW/BOOST 层。",
+      "notClaimed": [
+        "official",
+        "security audit",
+        "production readiness",
+        "UI correctness",
+        "independent third-party review"
+      ],
+      "verifyUrl": "https://github.com/PerryLink/dsh-plugin-certification",
+      "history": [
+        {
+          "status": "draft",
+          "at": "2026-11-01",
+          "reason": "self-assessed draft; not active"
+        }
+      ]
+    }
+  }
+}

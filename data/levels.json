@@ -1,0 +1,1531 @@
+{
+  "schema": "dsh-portal-levels/1",
+  "updatedAt": "2026-11-01",
+  "nonOfficial": true,
+  "disclaimer": "非官方 · 非认证 · 非安全审计 — 层级 = 采用深度，不是质量等级；A–D 是另一条轴，不可换算。过期或撤回的证据必须显示 stale / withdrawn，不显示为通过。",
+  "source": {
+    "standardRepo": "PerryLink/dsh-standards",
+    "levels": "spec/levels.json",
+    "attestations": "data/attestations.json",
+    "note": "Read-only projection for display. As of 2026-11-01 no ENTRY/FLOW/BOOST evidence record exists for any roster repo, so every axis is not-run / not-measured. The portal never derives a level from stars, ratings, attestation grades or README claims, and never computes a level itself.",
+    "mirroredAt": "2026-11-01"
+  },
+  "allowedStatus": {
+    "entry": [
+      "recognized",
+      "static",
+      "runtime",
+      "blocked",
+      "failed",
+      "not-run",
+      "stale",
+      "withdrawn",
+      "not-applicable"
+    ],
+    "flow": [
+      "manual",
+      "runtime",
+      "failed",
+      "not-run",
+      "stale",
+      "withdrawn",
+      "not-applicable"
+    ],
+    "boost": [
+      "measured",
+      "not-measured",
+      "failed",
+      "stale",
+      "withdrawn",
+      "not-applicable"
+    ]
+  },
+  "levels": [
+    {
+      "repo": "dsh-plugin-kit",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-checkers",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-community-bench",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-memento",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-checkpoint-rewind",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-composer-history",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-background-agents",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-phocinae",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-phone-inbox",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-session-pin",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-session-sync",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-auto-review",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      },
+      "note": "An attestation exists for this repo (DSH-ATT-2026-001, grade A), but A-D grades are orthogonal to ENTRY/FLOW/BOOST and are not converted here; no adoption-level evidence record exists."
+    },
+    {
+      "repo": "dsh-permission-rules",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-defend",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-mask",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-skill-pack-security",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-doublecheck",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-data-quality",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-test-drive",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-score",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-industry-research",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-fund-research",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-research-report",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-library",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-mcp-panel",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-claude-move",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-lsp-actions",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-local-ai",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-github",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-translate",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-click",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-talk",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-draw",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-budget",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-observe",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-fast",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-output-styles",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-plugin-guide",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-autotier",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-cert-mcp",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-laya",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-plugin-doctor",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-plugin-upgrade",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-reach",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-team-rooms",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-ticktick",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-aqua-input-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-archive-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-bid-ca-precheck",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-bid-qual-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-contract-stance",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-customs-doc-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-demurrage-ledger",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-drill-script-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-eia-guide-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-emergency-plan",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-essay-rubric-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-evidence-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-export-ctl-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-fmea-table-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-forecast-penalty",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-gongwen-flow-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-gongwen-word-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-guard-plan-qc",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-hazchem-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-hazplan-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-hidden-risk-map",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-hs-classify",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-icd-rule-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-lawcite-adapter",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-lc-doc-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-learning-gap-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-medrec-qc",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-nsfc-form-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-nurse-record-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-origin-rvc-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-ota-review-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-paper-doc-adapter",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-permit-report-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-pipeline-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-pleading-draft",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-policy-brief-draft",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-power-loss-split",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-power-ticket-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-ppap-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-protest-deadline",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-railway-window",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-repair-order-qc",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-review-reply-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-rulefile-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-safety-brief-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-site-log-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-soe-decision-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-soilwater-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-sop-sync-check",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-spc-gbt-adapter",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-tender-extract",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-tender-matrix",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    },
+    {
+      "repo": "dsh-warranty-calc",
+      "entry": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "flow": {
+        "status": "not-run",
+        "evidence": null
+      },
+      "boost": {
+        "status": "not-measured",
+        "evidence": null
+      }
+    }
+  ]
+}

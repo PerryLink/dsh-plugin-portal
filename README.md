@@ -41,30 +41,43 @@ P0 — the foundational must-haves for the portal — are **done** for v1:
 - **分组渲染 ✅** — one card per roster entry, grouped by `group`.
 - **质量徽章** ✅ — live `img.shields.io/github/stars/…` + a static rating badge per card; no self-hosting.
 
-P1/P2 (not yet in scope): star/rating auto-refresh pipeline, search/filter, per-plugin detail pages, and a self-hosted badge service.
+P1/P2 (landed in this revision): read-only adoption-level chips, the mirrored attestation index, and the `verify.html` lookup. Still out of scope: star/rating auto-refresh pipeline, search/filter, per-plugin detail pages, and a self-hosted badge service.
 
 ## 质量信号 / Quality signals
 
 Each card surfaces two quality signals: the **★ count** from the roster (synced snapshot) and a **live stars badge** from GitHub via shields.io. The static rating badge reflects the synced `star` value (`n/a` for `dsh-plugin-kit`, which ships no star count). These signals are display-only — the portal does no scoring of its own; scoring lives in `dsh-plugin-kit`.
 
+## 只读展示 / Read-only display
+
+The portal **only displays** adoption levels and attestations: it does **not compute a level**, does **not issue, validate or revoke an attestation**, and is **not an official site, not a certification body, and not a security audit**. 本门户只读展示：不计算 level、不做认证、不做安全审计，也不代表 DeepSeek；没有证据的层显示为 `not-run` / `not-measured`，不显示为通过。
+
+- `data/levels.json` — a read-only projection of the three adoption depths (`entry` / `flow` / `boost`) for every roster repo. An axis without an evidence record is displayed as `not-run` / `not-measured`, never as a pass; cards keep the roster order and are never sorted or weighted by level.
+- `data/attestations.json` — a mirror of the standard repository's `publish/attestations/index.json`. `source` points at the upstream path/URL and `records` copies the attestation files referenced by `file`, so the verify page needs no network call. Attestation grades A–D are orthogonal to the levels and are never converted.
+- `verify.html` — look up an `attestationId` and read its subject, grade, claimLevel, status, dates, scope, excluded list, disclaimer and evidence links. An expired record renders as `stale` and a withdrawn one as `withdrawn`; neither is ever shown as valid. The page carries the same-view disclaimer 非官方 · 非认证 · 非安全审计.
+
 ## 结构与同步 / Layout & sync
 
 ```
 dsh-plugin-portal/
-├── index.html        # 单文件门户（内联 CSS/JS，无外部运行时依赖）
-├── data/repos.json   # 从 dsh-plugin-kit/data/repos.json 复制的清单（见 _source 注释）
-└── README.md         # 本文件
+├── index.html              # 单文件门户（内联 CSS/JS，无外部运行时依赖）
+├── verify.html             # attestationId 只读查验（零依赖、静态、无构建）
+├── data/repos.json         # 从 dsh-plugin-kit/data/repos.json 复制的清单（见 _source 注释）
+├── data/levels.json        # 三层采用深度的只读投影（不计算 level）
+├── data/attestations.json  # 标准仓 publish/attestations/index.json 的镜像
+├── scripts/verify-portal.mjs # 零依赖门禁（roster + levels + attestations + pages）
+├── package.json            # npm test 别名；无依赖、无安装步骤
+└── README.md               # 本文件
 ```
 
 `data/repos.json` is **not** the source of truth: [`dsh-plugin-kit/data/repos.json`](https://github.com/PerryLink/dsh-plugin-kit/blob/main/data/repos.json) owns the roster and star counts. To refresh this portal, re-copy that file over `data/repos.json`.
 
 ## 本地预览 / Local preview
 
-Open over HTTP (the page fetches `data/repos.json`, which file:// blocks):
+Open over HTTP (the pages fetch `data/repos.json`, `data/levels.json` and `data/attestations.json`, which file:// blocks):
 
 ```sh
 python -m http.server 8080
-# then open http://localhost:8080
+# then open http://localhost:8080/ and http://localhost:8080/verify.html
 ```
 
 ## 校验 / Validation
@@ -72,7 +85,8 @@ python -m http.server 8080
 No browser and no install step: the gate is zero-dependency and asserts that about itself, so the portal stays runnable from a bare checkout.
 
 ```sh
-node scripts/verify-portal.mjs
+node scripts/verify-portal.mjs   # the gate itself
+npm test                         # same gate, no install step (package.json has no dependencies)
 ```
 
 It prints the authoritative counts (entries, groups, per-group) and checks:
@@ -83,7 +97,11 @@ It prints the authoritative counts (entries, groups, per-group) and checks:
 4. every roster entry has a blurb in `DESCRIPTIONS` and every group a `GROUP_EN` label — an entry whose blurb has not landed yet must be registered in `PENDING_DESCRIPTION` (the deliberate allowlist), otherwise the gate fails;
 5. star badges derive their owner from `repo.github`, third-party owners included (`pan17/dsh-wechat`) — no hardcoded owner;
 6. `data/repos.json` is a **verbatim copy** of the upstream `dsh-plugin-kit/data/repos.json` except for `_source`, and the sha256 recorded in `_source` still matches that file. On a runner without the sibling kit checkout (CI) this check reports `skip` rather than failing, so the gate is never red for a reason the runner cannot fix;
-7. the README does not freeze a count.
+7. the README does not freeze a count;
+8. `data/levels.json` only references roster repos, covers every one of them, uses the per-level status enum, and every `runtime` / `measured` / `manual` status carries an `https` `evidence.url` — `not-run` is never upgraded to a pass;
+9. `data/attestations.json` mirrors the standard-repository index with unique `attestationId`s, real `expiresAt` dates, detail for every record, and **no `level` field anywhere** (a grade is orthogonal to an adoption level);
+10. `verify.html` parses, shows 非官方 · 非认证 · 非安全审计 in the same view, and classifies an expired or withdrawn record as `stale` / `withdrawn` — never `valid`;
+11. `index.html` renders the optional level row from `data/levels.json`, shows `not-run` / `not-measured` rather than an empty badge, and links evidence when a record has one.
 
 Two behaviors worth knowing when reading a card: the star badge owner comes from the roster entry's own `github` URL, and a roster entry with no blurb renders the visible **`description not synced`** marker (accent, italic) plus one `console.warn` instead of silently showing placeholder copy.
 
@@ -200,4 +218,4 @@ The ecosystem is moving to three **adoption depths**, not grades: **DSH-ENTRY** 
 
 - Public teaching copy: [dsh-plugin-guide/guide/standards.md](https://github.com/PerryLink/dsh-plugin-guide/blob/main/guide/standards.md)
 - `dsh-plugin-doctor` exposes an ENTRY projection in its JSON report; `dsh-plugin-certification` explains why its A–D grades are orthogonal to the levels.
-- The machine-readable `spec/levels.json` and the audit tool live in the private `dsh-standards` project (draft; ask the maintainer).
+- The machine-readable `spec/levels.json` and the audit tool live in the private `dsh-standards` project (draft; ask the maintainer). This portal does not ship or reimplement that spec: it only renders the labels mirrored in `data/levels.json`, and `verify.html` reads the mirrored attestation index. 本门户只读展示，不计算 level、不做认证。

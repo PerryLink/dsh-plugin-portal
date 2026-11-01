@@ -17,7 +17,17 @@
 //      upstream file. When the sibling kit checkout is absent (CI runners) this
 //      check reports SKIP instead of failing - a gate that is red on every
 //      runner is not a gate;
-//   7. counts are printed for the README, which must not hardcode them.
+//   7. counts are printed for the README, which must not hardcode them;
+//   8. data/levels.json only references roster repos, uses the per-level status
+//      enum, and every evidence-bearing status (runtime/measured/manual) carries
+//      an https evidence.url - not-run is never upgraded to a pass;
+//   9. data/attestations.json mirrors the standard-repository index: unique
+//      attestationId, real expiry dates, and no `level` field anywhere (a grade
+//      is orthogonal to an adoption level);
+//  10. verify.html parses, shows the non-official disclaimer in the same view,
+//      and renders an expired/withdrawn record as stale/withdrawn - never valid;
+//  11. index.html renders the optional levels row, shows no empty badge, and
+//      links evidence when a record has one.
 //
 // Usage: node scripts/verify-portal.mjs [--root <dir>] [--quiet]
 //   --root  verify a different tree (used to drive the negative cases)
@@ -165,7 +175,7 @@ if (!existsSync(htmlPath)) {
     }
     try {
       vm.createContext(context)
-      new vm.Script(`${inline}\n;globalThis.__probe = { DESCRIPTIONS, GROUP_EN, starsBadge, ownerOf, card };`).runInContext(context)
+      new vm.Script(`${inline}\n;globalThis.__probe = { DESCRIPTIONS, GROUP_EN, starsBadge, ownerOf, card, levelChips };`).runInContext(context)
       probe = context.__probe
       ok('check 3: the inline script parses and runs under a DOM stub')
     } catch (error) {
@@ -292,6 +302,332 @@ if (!existsSync(readmePath)) {
   }
 }
 
+// ------------------------------------------------------- 8. adoption levels
+const isCalendarDate = (value) => {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
+  const time = Date.parse(`${value}T00:00:00Z`)
+  return Number.isFinite(time) && new Date(time).toISOString().slice(0, 10) === value
+}
+
+const LEVEL_STATUS = {
+  entry: new Set(['recognized', 'static', 'runtime', 'blocked', 'failed', 'not-run', 'stale', 'withdrawn', 'not-applicable']),
+  flow: new Set(['manual', 'runtime', 'failed', 'not-run', 'stale', 'withdrawn', 'not-applicable']),
+  boost: new Set(['measured', 'not-measured', 'failed', 'stale', 'withdrawn', 'not-applicable']),
+}
+const LEVEL_AXES = ['entry', 'flow', 'boost']
+const EVIDENCE_BEARING = new Set(['runtime', 'measured', 'manual'])
+const HTTPS_RE = /^https:\/\//
+
+const levelsPath = join(ROOT, 'data', 'levels.json')
+let levels = null
+if (!existsSync(levelsPath)) {
+  fail('check 8: data/levels.json is missing')
+} else {
+  try {
+    const parsed = JSON.parse(readText(levelsPath))
+    if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) fail('check 8: data/levels.json must be a JSON object')
+    else levels = parsed
+  } catch (error) {
+    fail(`check 8: data/levels.json does not parse: ${error.message}`)
+  }
+}
+
+if (levels !== null) {
+  const problems = []
+  if (typeof levels.schema !== 'string' || levels.schema.length === 0) problems.push('schema must be a non-empty string')
+  if (levels.nonOfficial !== true) problems.push('nonOfficial must be true')
+  if (typeof levels.disclaimer !== 'string' || !/非官方/.test(levels.disclaimer) || !/非认证/.test(levels.disclaimer) || !/非安全审计/.test(levels.disclaimer)) {
+    problems.push('disclaimer must carry the 非官方 / 非认证 / 非安全审计 denial')
+  }
+  if (!isCalendarDate(levels.updatedAt)) problems.push('updatedAt must be a real YYYY-MM-DD date')
+  if (levels.source === null || typeof levels.source !== 'object' || Array.isArray(levels.source)) {
+    problems.push('source must be an object describing the read-only upstream')
+  }
+  if (!Array.isArray(levels.levels)) {
+    problems.push('levels must be an array')
+  } else if (roster !== null) {
+    const rosterNames = new Set(roster.repos.map((entry) => entry.name))
+    const seen = new Set()
+    for (const [index, row] of levels.levels.entries()) {
+      const at = `levels[${index}]`
+      if (typeof row?.repo !== 'string' || row.repo.length === 0) {
+        problems.push(`${at}.repo must be a non-empty string`)
+      } else if (!rosterNames.has(row.repo)) {
+        problems.push(`${at}.repo "${row.repo}" is not in the roster`)
+      } else if (seen.has(row.repo)) {
+        problems.push(`${at}.repo "${row.repo}" is duplicated`)
+      } else {
+        seen.add(row.repo)
+      }
+      for (const axis of LEVEL_AXES) {
+        const cell = row?.[axis]
+        if (cell === null || typeof cell !== 'object' || Array.isArray(cell)) {
+          problems.push(`${at}.${axis} must be an object with status/evidence`)
+          continue
+        }
+        if (!LEVEL_STATUS[axis].has(cell.status)) {
+          problems.push(`${at}.${axis}.status "${cell.status}" is outside ${axis}'s allowed enum (${[...LEVEL_STATUS[axis]].join('|')})`)
+        }
+        let evidenceUrl = null
+        if (cell.evidence !== null && cell.evidence !== undefined) {
+          if (typeof cell.evidence !== 'object' || Array.isArray(cell.evidence)) {
+            problems.push(`${at}.${axis}.evidence must be null or an object with a url`)
+          } else if (typeof cell.evidence.url !== 'string' || !HTTPS_RE.test(cell.evidence.url)) {
+            problems.push(`${at}.${axis}.evidence.url must be an https URL`)
+          } else {
+            evidenceUrl = cell.evidence.url
+          }
+        }
+        if (EVIDENCE_BEARING.has(cell.status) && evidenceUrl === null) {
+          problems.push(`${at}.${axis}: status "${cell.status}" requires evidence.url`)
+        }
+      }
+    }
+    const missing = [...rosterNames].filter((name) => !seen.has(name))
+    if (missing.length > 0) problems.push(`roster repos without a levels entry: ${missing.join(', ')}`)
+  }
+
+  if (problems.length > 0) {
+    for (const problem of problems) fail(`check 8: ${problem}`)
+  } else if (roster === null) {
+    skip('check 8: data/levels.json parses, but the roster did not parse so repo coverage was not evaluated')
+  } else {
+    ok(`check 8: levels cover all ${roster.repos.length} roster repos, statuses are in-enum, and every runtime/measured/manual record has an evidence URL`)
+  }
+}
+
+// --------------------------------------------------- 9. attestation mirror
+const ATTESTATION_STATUS = new Set(['draft', 'active', 'suspended', 'withdrawn', 'expired'])
+const findLevelKeys = (value, at = '$', found = []) => {
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => findLevelKeys(item, `${at}[${index}]`, found))
+  } else if (value !== null && typeof value === 'object') {
+    for (const [key, child] of Object.entries(value)) {
+      if (key === 'level') found.push(`${at}.level`)
+      findLevelKeys(child, `${at}.${key}`, found)
+    }
+  }
+  return found
+}
+
+const attestationsPath = join(ROOT, 'data', 'attestations.json')
+let attestations = null
+if (!existsSync(attestationsPath)) {
+  fail('check 9: data/attestations.json is missing')
+} else {
+  try {
+    const parsed = JSON.parse(readText(attestationsPath))
+    if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) fail('check 9: data/attestations.json must be a JSON object')
+    else attestations = parsed
+  } catch (error) {
+    fail(`check 9: data/attestations.json does not parse: ${error.message}`)
+  }
+}
+
+if (attestations !== null) {
+  const problems = []
+  if (typeof attestations.schema !== 'string' || attestations.schema.length === 0) problems.push('schema must be a non-empty string')
+  const source = attestations.source
+  if (source === null || typeof source !== 'object' || Array.isArray(source)) {
+    problems.push('source must be an object pointing at the standard-repository path and/or URL')
+  } else {
+    const hasPath = typeof source.path === 'string' && source.path.length > 0
+    const hasUrl = typeof source.url === 'string' && HTTPS_RE.test(source.url)
+    if (!hasPath && !hasUrl) problems.push('source.path or an https source.url is required')
+    if (source.url !== undefined && !hasUrl) problems.push('source.url must be an https URL when present')
+  }
+  if (!Array.isArray(attestations.attestations)) {
+    problems.push('attestations must be an array')
+  } else {
+    const ids = new Set()
+    for (const [index, item] of attestations.attestations.entries()) {
+      const at = `attestations[${index}]`
+      if (typeof item?.attestationId !== 'string' || item.attestationId.length === 0) {
+        problems.push(`${at}.attestationId must be a non-empty string`)
+      } else if (ids.has(item.attestationId)) {
+        problems.push(`${at}.attestationId "${item.attestationId}" is duplicated`)
+      } else {
+        ids.add(item.attestationId)
+      }
+      if (typeof item?.status !== 'string' || !ATTESTATION_STATUS.has(item.status)) {
+        problems.push(`${at}.status must be draft|active|suspended|withdrawn|expired`)
+      }
+      if (!isCalendarDate(item?.expiresAt)) problems.push(`${at}.expiresAt must be a real YYYY-MM-DD date`)
+      if (item?.issuedAt !== undefined && !isCalendarDate(item.issuedAt)) {
+        problems.push(`${at}.issuedAt must be a real YYYY-MM-DD date when present`)
+      }
+      if (isCalendarDate(item?.issuedAt) && isCalendarDate(item?.expiresAt) && Date.parse(item.expiresAt) <= Date.parse(item.issuedAt)) {
+        problems.push(`${at}.expiresAt must be after issuedAt`)
+      }
+      if (item?.file !== undefined && (typeof item.file !== 'string' || !/^publish\/attestations\/[A-Za-z0-9._-]+\.json$/.test(item.file) || item.file.includes('..'))) {
+        problems.push(`${at}.file must be a safe publish/attestations/<name>.json path`)
+      }
+      if (isCalendarDate(item?.expiresAt) && item.status === 'active' && Date.parse(`${item.expiresAt}T23:59:59Z`) < Date.now()) {
+        notice(`check 9: ${item.attestationId} is declared active but expiresAt has passed - verify.html renders it stale; refresh the mirror and the upstream record`)
+      }
+    }
+
+    const entryLevels = findLevelKeys(attestations.attestations, 'attestations')
+    if (entryLevels.length > 0) {
+      problems.push(`attestation entries must not carry a level field (A-D is orthogonal to ENTRY/FLOW/BOOST): ${entryLevels.join(', ')}`)
+    }
+
+    const records = attestations.records
+    if (records === null || typeof records !== 'object' || Array.isArray(records)) {
+      problems.push('records must be an object keyed by attestationId (verify.html renders scope/excluded/disclaimer/evidence from it)')
+    } else {
+      for (const item of attestations.attestations) {
+        const id = item?.attestationId
+        if (typeof id !== 'string' || id.length === 0) continue
+        if (!Object.prototype.hasOwnProperty.call(records, id)) {
+          problems.push(`records is missing detail for "${id}" - verify.html cannot render scope/excluded/disclaimer/evidence`)
+          continue
+        }
+        const record = records[id]
+        if (record === null || typeof record !== 'object' || Array.isArray(record)) {
+          problems.push(`records["${id}"] must be an object`)
+          continue
+        }
+        if (record.attestationId !== id) {
+          problems.push(`records["${id}"].attestationId does not match its key`)
+          continue
+        }
+        const drift = []
+        if (record.status !== item.status) drift.push('status')
+        if (record.grade !== item.grade) drift.push('grade')
+        if (record.claimLevel !== item.claimLevel) drift.push('claimLevel')
+        if (record.issuedAt !== item.issuedAt) drift.push('issuedAt')
+        if (record.expiresAt !== item.expiresAt) drift.push('expiresAt')
+        if (record.verifyUrl !== item.verifyUrl) drift.push('verifyUrl')
+        if (record.subject?.repo !== item.repo) drift.push('subject.repo')
+        if (record.subject?.version !== item.version) drift.push('subject.version')
+        if (drift.length > 0) {
+          problems.push(`records["${id}"] disagrees with the index on ${drift.join(', ')} - copy the attestation file verbatim`)
+        }
+      }
+      const orphans = Object.keys(records).filter((key) => !ids.has(key))
+      if (orphans.length > 0) notice(`check 9: records carries detail for unknown attestation(s): ${orphans.join(', ')}`)
+      const recordLevels = findLevelKeys(records, 'records')
+      if (recordLevels.length > 0) {
+        problems.push(`attestation records must not carry a level field (A-D is orthogonal to ENTRY/FLOW/BOOST): ${recordLevels.join(', ')}`)
+      }
+    }
+  }
+
+  if (problems.length > 0) {
+    for (const problem of problems) fail(`check 9: ${problem}`)
+  } else {
+    ok(`check 9: ${attestations.attestations.length} mirrored attestation(s), unique IDs, valid dates, no level field, detail matches the index`)
+  }
+}
+
+// ----------------------------------------------------------- 10. verify page
+const verifyPath = join(ROOT, 'verify.html')
+if (!existsSync(verifyPath)) {
+  fail('check 10: verify.html is missing')
+} else {
+  const verifyHtml = readText(verifyPath)
+  if (!/非官方\s*·\s*非认证\s*·\s*非安全审计/.test(verifyHtml)) {
+    fail('check 10: verify.html must show 非官方 · 非认证 · 非安全审计 in the same view')
+  }
+  if (!/INDEX_URL\s*=\s*['"]data\/attestations\.json['"]/.test(verifyHtml)) {
+    fail('check 10: verify.html does not read data/attestations.json')
+  }
+  const blocks = [...verifyHtml.matchAll(/<script>([\s\S]*?)<\/script>/g)]
+  if (blocks.length !== 1) {
+    fail(`check 10: expected exactly 1 inline <script> block in verify.html, found ${blocks.length}`)
+  } else {
+    const makeElement = (tag) => ({
+      tag,
+      className: '',
+      textContent: '',
+      href: '',
+      target: '',
+      rel: '',
+      title: '',
+      children: [],
+      appendChild(child) { this.children.push(child); return child },
+    })
+    const context = {
+      console: { warn() {}, log() {}, error() {} },
+      document: { createElement: makeElement },
+    }
+    try {
+      vm.createContext(context)
+      new vm.Script(`${blocks[0][1]}\n;globalThis.__probe = { classify, findAttestation, recordFor, evidenceLinks, STATUS_TEXT };`).runInContext(context)
+      const page = context.__probe
+      const now = Date.parse('2026-11-01T12:00:00Z')
+      const cases = [
+        [{ status: 'active', expiresAt: '2027-01-01' }, 'valid', true],
+        [{ status: 'active', expiresAt: '2026-01-01' }, 'stale', false],
+        [{ status: 'expired', expiresAt: '2027-01-01' }, 'stale', false],
+        [{ status: 'withdrawn', expiresAt: '2027-01-01' }, 'withdrawn', false],
+        [{ status: 'withdrawn', expiresAt: '2026-01-01' }, 'withdrawn', false],
+        [{ status: 'draft', expiresAt: '2027-01-01' }, 'inactive', false],
+      ]
+      const problems = []
+      for (const [entry, state, valid] of cases) {
+        const outcome = page.classify(entry, now)
+        if (outcome.state !== state || outcome.valid !== valid) {
+          problems.push(`${entry.status} / ${entry.expiresAt}: expected ${state} (valid=${valid}), got ${outcome.state} (valid=${outcome.valid})`)
+        }
+      }
+      const fixture = { attestations: [{ attestationId: 'DSH-ATT-2026-001' }] }
+      if (page.findAttestation(fixture, 'dsh-att-2026-001')?.attestationId !== 'DSH-ATT-2026-001') {
+        problems.push('findAttestation does not match case-insensitively')
+      }
+      if (page.findAttestation(fixture, 'unknown') !== null) problems.push('findAttestation returns a record for an unknown id')
+      const evidence = page.evidenceLinks({ evidence: [{ id: 'A', result: 'PASS', url: 'https://example.com/a' }] })
+      if (!Array.isArray(evidence) || evidence[0]?.tag !== 'a' || evidence[0]?.href !== 'https://example.com/a') {
+        problems.push('evidenceLinks does not render an https anchor')
+      }
+      // The state chip must read `stale`/`withdrawn`, not the declared status.
+      if (page.STATUS_TEXT?.stale !== 'stale' || page.STATUS_TEXT?.withdrawn !== 'withdrawn') {
+        problems.push('STATUS_TEXT must label the stale and withdrawn states explicitly')
+      }
+      if (problems.length > 0) for (const problem of problems) fail(`check 10: ${problem}`)
+      else ok('check 10: verify.html parses and classifies expired/withdrawn records as stale/withdrawn, never valid')
+    } catch (error) {
+      fail(`check 10: the verify.html inline script does not parse or run: ${error.message}`)
+    }
+  }
+}
+
+// ----------------------------------------------- 11. index level chip wiring
+if (probe !== null && html !== null) {
+  const problems = []
+  if (typeof probe.levelChips !== 'function') {
+    problems.push('levelChips is not reachable from the inline script')
+  } else {
+    const sample = {
+      repo: 'demo',
+      entry: { status: 'not-run', evidence: null },
+      flow: { status: 'not-run', evidence: null },
+      boost: { status: 'not-measured', evidence: null },
+    }
+    const chips = probe.levelChips(sample)
+    const texts = chips && Array.isArray(chips.children) ? chips.children.map((chip) => chip.textContent) : []
+    if (!chips || chips.children.length !== 3) {
+      problems.push(`a fully not-run record should render 3 chips, got ${chips ? chips.children.length : 'no container'}`)
+    }
+    for (const expected of ['ENTRY not-run', 'FLOW not-run', 'BOOST not-measured']) {
+      if (!texts.includes(expected)) problems.push(`missing chip "${expected}" (got: ${texts.join(', ') || 'none'})`)
+    }
+    if (probe.levelChips(null) !== null) problems.push('an absent record must render no container (no empty badge)')
+    const withEvidence = probe.levelChips({ entry: { status: 'runtime', evidence: { url: 'https://example.com/entry' } } })
+    const anchor = withEvidence && withEvidence.children[0]
+    if (!anchor || anchor.tag !== 'a' || anchor.href !== 'https://example.com/entry') {
+      problems.push('a runtime status with evidence.url should render a link')
+    }
+    if (!/fetch\(\s*['"]data\/levels\.json['"]\s*\)/.test(html)) problems.push('index.html does not fetch data/levels.json')
+    if (!/非官方\s*·\s*非认证\s*·\s*非安全审计/.test(html)) {
+      problems.push('index.html shows level labels, so the same-view 非官方/非认证/非安全审计 disclaimer is required')
+    }
+  }
+  if (problems.length > 0) for (const problem of problems) fail(`check 11: ${problem}`)
+  else ok('check 11: index.html renders the optional level row from data/levels.json (no empty badges, evidence linked)')
+}
+
 // ----------------------------------------------------------------- reporting
 for (const message of notices) console.log(`note ${message}`)
 if (failures.length > 0) {
@@ -299,4 +635,4 @@ if (failures.length > 0) {
   for (const message of failures) console.error(`  - ${message}`)
   process.exit(1)
 }
-console.log('\nverify-portal: PASS (roster + inline script + upstream parity + counts)')
+console.log('\nverify-portal: PASS (roster + inline script + upstream parity + counts + levels + attestations + verify page)')

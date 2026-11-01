@@ -37,6 +37,16 @@
     color: var(--muted);
   }
   .stats strong { color: var(--accent); }
+  .stats a { color: var(--link); }
+  .disclaimer {
+    display: inline-block;
+    margin: 12px 0 0;
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 12px;
+  }
   main {
     max-width: 1080px;
     margin: 0 auto;
@@ -74,6 +84,22 @@
   .desc.missing { color: var(--accent); font-style: italic; }
   .badges { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   .badges img { height: 20px; display: block; }
+  .levels { display: flex; gap: 6px; flex-wrap: wrap; }
+  .lvl {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    padding: 2px 7px;
+    border-radius: 999px;
+    border: 1px dashed var(--border);
+    color: var(--muted);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  a.lvl:hover { border-color: var(--accent); text-decoration: underline; }
+  .lvl.runtime, .lvl.measured, .lvl.manual { border-style: solid; color: var(--accent); border-color: #6d4a23; background: #2a2015; }
+  .lvl.stale, .lvl.withdrawn, .lvl.failed, .lvl.blocked { border-style: solid; color: #ffb4ae; border-color: #6d3230; background: #47201f; }
+  .lvl.not-run, .lvl.not-measured { color: var(--muted); }
   .status { font-size: 11px; font-weight: 700; letter-spacing: .02em; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
   .status.frozen { background: #16324a; color: #9ecbff; border: 1px solid #274d70; }
   .status.retired { background: #47201f; color: #ffb4ae; border: 1px solid #6d3230; }
@@ -91,11 +117,13 @@
 <header>
   <h1>PerryLink DSH Plugin Portal <span class="zh">· 插件门户</span></h1>
   <p>One-page directory of the @perrylink DeepSeek Harness plugin ecosystem · DeepSeek Harness 插件生态总览</p>
-  <div class="stats">Showing <strong id="count">…</strong> plugins &amp; kit · 数据源自 data/repos.json</div>
+  <div class="stats">Showing <strong id="count">…</strong> plugins &amp; kit · 数据源自 data/repos.json · <a href="verify.html">Verify an attestation →</a></div>
+  <p class="disclaimer">非官方 · 非认证 · 非安全审计 / Not official, not a certification, not a security audit.</p>
 </header>
 <main id="grid"></main>
 <footer>
   Rendered from <code>data/repos.json</code> (synced from <a href="https://github.com/PerryLink/dsh-plugin-kit" target="_blank" rel="noopener">dsh-plugin-kit</a>).
+  Level chips are a read-only projection of <code>data/levels.json</code>; the portal never computes a level, ranks by one, or turns it into a certification.
   Star badges are live shields.io images; no self-hosted assets.
 </footer>
 <script>
@@ -242,7 +270,70 @@ function ratingBadge(star) {
     : `https://img.shields.io/badge/rating-${star}-orange`;
 }
 
-function card(repo) {
+// Adoption levels are an OPTIONAL, display-only layer: data/levels.json is a
+// read-only projection of evidence records kept outside this repository. The
+// portal never computes a level, never upgrades not-run to a pass, and never
+// sorts or weights cards by a level. A missing record simply renders nothing.
+const LEVEL_AXES = [
+  { key: 'entry', label: 'ENTRY' },
+  { key: 'flow', label: 'FLOW' },
+  { key: 'boost', label: 'BOOST' },
+];
+
+function levelChips(record) {
+  if (!record || typeof record !== 'object') return null;
+  const wrap = document.createElement('div');
+  wrap.className = 'levels';
+  wrap.title = 'Read-only adoption-depth labels from data/levels.json. Not a certification, not a ranking, and not a pass.';
+  let rendered = 0;
+  for (const axis of LEVEL_AXES) {
+    const cell = record[axis.key];
+    if (!cell || typeof cell.status !== 'string' || cell.status.length === 0) continue;
+    const evidenceUrl = cell.evidence && typeof cell.evidence.url === 'string' && /^https:\/\//i.test(cell.evidence.url)
+      ? cell.evidence.url
+      : null;
+    const chip = document.createElement(evidenceUrl ? 'a' : 'span');
+    chip.className = `lvl ${cell.status}`;
+    chip.textContent = `${axis.label} ${cell.status}`;
+    if (evidenceUrl) {
+      chip.href = evidenceUrl;
+      chip.target = '_blank';
+      chip.rel = 'noopener noreferrer';
+      chip.title = 'Read-only evidence link. The portal does not verify or endorse it and does not compute the level.';
+    } else if (cell.status === 'not-measured') {
+      chip.title = 'No BOOST evidence card; shown as not-measured. This is not a pass.';
+    } else if (cell.status === 'not-run') {
+      chip.title = 'No evidence record; shown as not-run. This is not a pass.';
+    } else {
+      chip.title = 'Read-only status from the evidence record; the portal does not verify it.';
+    }
+    wrap.appendChild(chip);
+    rendered += 1;
+  }
+  // No empty badge: an axis with no record is simply absent, never a blank chip.
+  return rendered === 0 ? null : wrap;
+}
+
+async function loadLevels() {
+  try {
+    const res = await fetch('data/levels.json');
+    if (!res.ok) throw new Error(`data/levels.json returned ${res.status}`);
+    const data = await res.json();
+    const byRepo = new Map();
+    const rows = data && Array.isArray(data.levels) ? data.levels : [];
+    for (const row of rows) {
+      if (row && typeof row.repo === 'string') byRepo.set(row.repo, row);
+    }
+    return byRepo;
+  } catch (error) {
+    // The layer is optional: a missing or broken levels file must not take the
+    // roster down. Cards then render without the level row.
+    console.warn(`dsh-plugin-portal: adoption levels unavailable (${error.message}) - cards render without the optional level row`);
+    return new Map();
+  }
+}
+
+function card(repo, level) {
   const article = document.createElement('article');
   article.className = 'card';
 
@@ -308,6 +399,8 @@ function card(repo) {
 
   article.appendChild(head);
   article.appendChild(desc);
+  const levels = levelChips(level);
+  if (levels) article.appendChild(levels);
   article.appendChild(badges);
   return article;
 }
@@ -315,10 +408,12 @@ function card(repo) {
 async function main() {
   const grid = document.getElementById('grid');
   const count = document.getElementById('count');
+  const levelsPromise = loadLevels();
   const res = await fetch('data/repos.json');
   if (!res.ok) throw new Error(`data/repos.json returned ${res.status}`);
   const data = await res.json();
   const repos = data.repos;
+  const levels = await levelsPromise;
   count.textContent = String(repos.length);
 
   const groups = [];
@@ -345,7 +440,7 @@ async function main() {
 
     const cards = document.createElement('div');
     cards.className = 'cards';
-    for (const repo of byGroup.get(group)) cards.appendChild(card(repo));
+    for (const repo of byGroup.get(group)) cards.appendChild(card(repo, levels.get(repo.name)));
     section.appendChild(cards);
 
     grid.appendChild(section);
