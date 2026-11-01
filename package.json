@@ -9,5 +9,6 @@
   },
   "scripts": {
     "test": "node scripts/verify-portal.mjs"
-  }
+  },
+  "icon": "icon.svg"
 }

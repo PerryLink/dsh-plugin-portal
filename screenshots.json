@@ -1,0 +1,14 @@
+[
+  {
+    "path": "docs/assets/dsh-plugin-portal-hero.png",
+    "kind": "hero",
+    "alt": "dsh-plugin-portal documentation card",
+    "caption": "Generated documentation baseline; replace with a real run."
+  },
+  {
+    "path": "docs/assets/dsh-plugin-portal-demo.gif",
+    "kind": "demo",
+    "alt": "dsh-plugin-portal documentation preview",
+    "caption": "Generated documentation preview."
+  }
+]
