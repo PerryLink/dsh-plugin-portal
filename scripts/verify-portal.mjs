@@ -228,7 +228,7 @@ if (probe !== null && roster !== null) {
 }
 
 // --------------------------------------------------- 6. upstream roster parity
-const kitRosterPath = resolve(ROOT, '..', 'dsh-plugin-kit', 'data', 'repos.json')
+const kitRosterPath = resolve(ROOT, '..', 'dsh-kit', 'data', 'repos.json')
 if (roster === null) {
   skip('check 6: roster did not parse, upstream parity not evaluated')
 } else if (!existsSync(kitRosterPath)) {
