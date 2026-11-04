@@ -1,19 +1,19 @@
 {
-  "_source": "Synced copy of dsh-plugin-kit/data/repos.json (https://github.com/PerryLink/dsh-plugin-kit). That file is the source of truth for the roster, the star counts and each entry's maintenance `status`; re-copy it here to refresh this portal. Upstream sha256: b6f2e585a7155f660df9d01c8e25654c76d5563fa40a9270539b814b83dca569 (recorded 2026-11-01; scripts/verify-portal.mjs fails when the upstream file no longer hashes to this, or when the two rosters stop matching verbatim).",
-  "updatedAt": "2026-10-31",
+  "_source": "Synced copy of dsh-kit/data/repos.json (https://github.com/PerryLink/dsh-kit). That file is the source of truth for the roster, the star counts and each entry's maintenance `status`; re-copy it here to refresh this portal. Upstream sha256: 946bc0ab6dc1f4325d11d584ec170e31dc6b7025d569d6b305335362c6f2daad (recorded 2026-11-04; scripts/verify-portal.mjs fails when the upstream file no longer hashes to this, or when the two rosters stop matching verbatim).",
+  "updatedAt": "2026-11-04",
   "note": "Registry of the @perrylink dsh plugin ecosystem (99 plugin repos + this kit). Star counts re-read on 2026-10-19; `status` re-derived on 2026-10-31. `status` is the maintenance state: active, frozen (no new features, only real breakages fixed), retired (npm-deprecated). The roster rule is the same one plugins.txt uses: `dsh.bundle.patch` declared, published, and not retired.",
   "repos": [
     {
-      "name": "dsh-plugin-kit",
-      "github": "https://github.com/PerryLink/dsh-plugin-kit",
+      "name": "dsh-scaffold",
+      "github": "https://github.com/PerryLink/dsh-scaffold",
       "group": "基建",
       "role": "infra",
       "star": 1,
       "status": "active"
     },
     {
-      "name": "dsh-checkers",
-      "github": "https://github.com/PerryLink/dsh-checkers",
+      "name": "dsh-check-pack",
+      "github": "https://github.com/PerryLink/dsh-check-pack",
       "group": "质量",
       "role": "plugin",
       "star": 0,
@@ -124,8 +124,8 @@
       "status": "active"
     },
     {
-      "name": "dsh-skill-pack-security",
-      "github": "https://github.com/PerryLink/dsh-skill-pack-security",
+      "name": "dsh-security-pack",
+      "github": "https://github.com/PerryLink/dsh-security-pack",
       "group": "安全",
       "role": "plugin",
       "star": 19,
@@ -228,8 +228,8 @@
       "status": "active"
     },
     {
-      "name": "dsh-github",
-      "github": "https://github.com/PerryLink/dsh-github",
+      "name": "dsh-github-bot",
+      "github": "https://github.com/PerryLink/dsh-github-bot",
       "group": "集成",
       "role": "plugin",
       "star": 23,
@@ -300,8 +300,8 @@
       "status": "active"
     },
     {
-      "name": "dsh-plugin-guide",
-      "github": "https://github.com/PerryLink/dsh-plugin-guide",
+      "name": "dsh-primer",
+      "github": "https://github.com/PerryLink/dsh-primer",
       "group": "生态",
       "role": "plugin",
       "star": 46,
@@ -332,16 +332,16 @@
       "status": "active"
     },
     {
-      "name": "dsh-plugin-doctor",
-      "github": "https://github.com/PerryLink/dsh-plugin-doctor",
+      "name": "dsh-clinic",
+      "github": "https://github.com/PerryLink/dsh-clinic",
       "group": "生态",
       "role": "plugin",
       "star": 4,
       "status": "active"
     },
     {
-      "name": "dsh-plugin-upgrade",
-      "github": "https://github.com/PerryLink/dsh-plugin-upgrade",
+      "name": "dsh-codemod",
+      "github": "https://github.com/PerryLink/dsh-codemod",
       "group": "生态",
       "role": "plugin",
       "star": 2,
@@ -364,8 +364,8 @@
       "status": "retired"
     },
     {
-      "name": "dsh-ticktick",
-      "github": "https://github.com/PerryLink/dsh-ticktick",
+      "name": "dsh-dida",
+      "github": "https://github.com/PerryLink/dsh-dida",
       "group": "集成",
       "role": "plugin",
       "star": 3,
