@@ -1,6 +1,6 @@
 {
   "schema": "dsh-portal-levels/1",
-  "updatedAt": "2026-11-01",
+  "updatedAt": "2026-11-04",
   "nonOfficial": true,
   "disclaimer": "非官方 · 非认证 · 非安全审计 — 层级 = 采用深度，不是质量等级；A–D 是另一条轴，不可换算。过期或撤回的证据必须显示 stale / withdrawn，不显示为通过。",
   "source": {
@@ -42,7 +42,7 @@
   },
   "levels": [
     {
-      "repo": "dsh-plugin-kit",
+      "repo": "dsh-scaffold",
       "entry": {
         "status": "not-run",
         "evidence": null
@@ -57,7 +57,7 @@
       }
     },
     {
-      "repo": "dsh-checkers",
+      "repo": "dsh-check-pack",
       "entry": {
         "status": "not-run",
         "evidence": null
@@ -268,7 +268,7 @@
       }
     },
     {
-      "repo": "dsh-skill-pack-security",
+      "repo": "dsh-security-pack",
       "entry": {
         "status": "not-run",
         "evidence": null
@@ -463,7 +463,7 @@
       }
     },
     {
-      "repo": "dsh-github",
+      "repo": "dsh-github-bot",
       "entry": {
         "status": "not-run",
         "evidence": null
@@ -598,7 +598,7 @@
       }
     },
     {
-      "repo": "dsh-plugin-guide",
+      "repo": "dsh-primer",
       "entry": {
         "status": "not-run",
         "evidence": null
@@ -658,7 +658,7 @@
       }
     },
     {
-      "repo": "dsh-plugin-doctor",
+      "repo": "dsh-clinic",
       "entry": {
         "status": "not-run",
         "evidence": null
@@ -673,7 +673,7 @@
       }
     },
     {
-      "repo": "dsh-plugin-upgrade",
+      "repo": "dsh-codemod",
       "entry": {
         "status": "not-run",
         "evidence": null
@@ -718,7 +718,7 @@
       }
     },
     {
-      "repo": "dsh-ticktick",
+      "repo": "dsh-dida",
       "entry": {
         "status": "not-run",
         "evidence": null
