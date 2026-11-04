@@ -107,7 +107,7 @@ Two behaviors worth knowing when reading a card: the star badge owner comes from
 
 ## PerryLink DSH Plugin Family
 
-This project is part of the DeepSeek Harness plugin family from [PerryLink](https://github.com/PerryLink). The roster stays collapsed below so every README keeps a short first screen; expand it to see every row and its status.
+This project is part of the DeepSeek Harness plugin family from [PerryLink](https://github.com/PerryLink). The full group-by-group index — standards and checks, guides, developer toolchain, runtime plugins, the 53-checker compliance suite, domain operations, catalogs, and the separate Phocinae decision line — is [FAMILY.md](https://github.com/PerryLink/PerryLink/blob/main/FAMILY.md). The roster stays collapsed below so every README keeps a short first screen; expand it to see every row and its status.
 
 <details>
 <summary>Expand all plugins</summary>
