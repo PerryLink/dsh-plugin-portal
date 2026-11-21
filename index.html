@@ -122,7 +122,7 @@
 </header>
 <main id="grid"></main>
 <footer>
-  Rendered from <code>data/repos.json</code> (synced from <a href="https://github.com/PerryLink/dsh-plugin-kit" target="_blank" rel="noopener">dsh-plugin-kit</a>).
+  Rendered from <code>data/repos.json</code> (synced from <a href="https://github.com/PerryLink/dsh-kit" target="_blank" rel="noopener">dsh-plugin-kit</a>).
   Level chips are a read-only projection of <code>data/levels.json</code>; the portal never computes a level, ranks by one, or turns it into a certification.
   Star badges are live shields.io images; no self-hosted assets.
 </footer>
@@ -130,7 +130,7 @@
 'use strict';
 
 // One-line descriptions (card blurb). Kept here because the roster source
-// (dsh-plugin-kit/data/repos.json) carries no description field.
+// (dsh-kit/data/repos.json) carries no description field.
 const DESCRIPTIONS = {
   'dsh-memento': 'Approval-gated cross-session memory: ctx.memory seam + SQLite + memory tool',
   'dsh-checkpoint-rewind': 'Claude Code /rewind-equivalent: snapshots, session forks, one-shot restore',
@@ -420,7 +420,7 @@ function card(repo, level) {
 
   const desc = document.createElement('p');
   desc.className = 'desc';
-  // The roster (data/repos.json, synced from dsh-plugin-kit) can gain an entry
+  // The roster (data/repos.json, synced from dsh-kit) can gain an entry
   // before its blurb lands in DESCRIPTIONS. Surface that instead of silently
   // rendering a placeholder that looks like real copy.
   const description = DESCRIPTIONS[repo.name];

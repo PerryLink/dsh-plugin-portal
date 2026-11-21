@@ -232,7 +232,7 @@ const kitRosterPath = resolve(ROOT, '..', 'dsh-kit', 'data', 'repos.json')
 if (roster === null) {
   skip('check 6: roster did not parse, upstream parity not evaluated')
 } else if (!existsSync(kitRosterPath)) {
-  skip('check 6: sibling dsh-plugin-kit checkout absent - roster parity is not verifiable on this runner')
+  skip('check 6: sibling dsh-kit checkout absent - roster parity is not verifiable on this runner')
 } else {
   const kitText = readText(kitRosterPath)
   const recorded = /sha256:\s*([0-9a-fA-F]{64})/.exec(roster._source)?.[1]
@@ -240,7 +240,7 @@ if (roster === null) {
   if (recorded === undefined) {
     fail('check 6: data/repos.json _source does not record the upstream sha256')
   } else if (recorded.toLowerCase() !== actual) {
-    fail(`check 6: upstream dsh-plugin-kit/data/repos.json changed (sha256 ${actual.slice(0, 12)}… != recorded ${recorded.slice(0, 12)}…) - re-copy it and update _source`)
+    fail(`check 6: upstream dsh-kit/data/repos.json changed (sha256 ${actual.slice(0, 12)}… != recorded ${recorded.slice(0, 12)}…) - re-copy it and update _source`)
   } else {
     ok(`check 6: recorded upstream sha256 matches (${actual.slice(0, 12)}…)`)
   }

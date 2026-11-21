@@ -27,7 +27,7 @@ jobs:
       # Roster contract, inline-script parse/run, blurb coverage, badge owner
       # derivation, README count governance, adoption levels, the mirrored
       # attestation index, and both static pages. The upstream-parity check
-      # reports `skip` here because the sibling dsh-plugin-kit checkout does not
+      # reports `skip` here because the sibling dsh-kit checkout does not
       # exist on this runner - it must not fail CI for something the runner
       # cannot fix.
       - name: Portal gate
