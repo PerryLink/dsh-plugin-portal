@@ -2,7 +2,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-plugin-portal-hero-en-dark.webp">
-  <img src="docs/assets/dsh-plugin-portal-hero-en-light.webp" width="100%" alt="dsh-plugin-portal: una página estática para el ecosistema de plugins — data/repos.json alimenta 99 tarjetas del roster en 17 grupos, index.html incluye CSS/JS en línea sin paso de build, verify.html consulta registros attestationId en solo lectura y node scripts/verify-portal.mjs imprime los recuentos">
+  <img src="docs/assets/dsh-plugin-portal-hero-en-light.webp" width="100%" alt="dsh-plugin-portal: una página estática para el ecosistema de plugins — data/repos.json alimenta 99 tarjetas del roster en 18 grupos, index.html incluye CSS/JS en línea sin paso de build, verify.html consulta registros attestationId en solo lectura y node scripts/verify-portal.mjs imprime los recuentos">
 </picture>
 
 # dsh-plugin-portal
@@ -26,7 +26,7 @@
 
 ## Panorama del ecosistema
 
-![dsh-plugin-portal: ejecución real en terminal de node scripts/verify-portal.mjs en un checkout limpio — las comprobaciones 1, 2, 4 y 9 pasan, la 6 se omite sin el checkout hermano dsh-plugin-kit, los recuentos muestran 99 entradas en 17 grupos y la compuerta termina con verify-portal: PASS](docs/assets/dsh-plugin-portal-demo.gif)
+![dsh-plugin-portal: ejecución real en terminal de node scripts/verify-portal.mjs en un checkout limpio — las comprobaciones 1, 2, 4 y 9 pasan, la 6 se omite sin el checkout hermano dsh-plugin-kit, los recuentos muestran 99 entradas en 18 grupos y la compuerta termina con verify-portal: PASS](docs/assets/dsh-plugin-portal-demo.gif)
 
 *Animación: node scripts/verify-portal.mjs re-ejecutado el 2026-11-21 desde un checkout limpio — la comprobación 6 se omite porque falta el checkout hermano dsh-plugin-kit, exactamente como en un runner de CI. stdout real, sin llamadas de red.*
 
@@ -42,16 +42,24 @@ Las tarjetas se agrupan por el campo `group` del roster (clave del grupo → eti
 
 | Grupo | Contenido |
 |---|---|
-| 基建 Infra | `dsh-plugin-kit` |
-| 会话 Session | `dsh-memento`, `dsh-checkpoint-rewind`, `dsh-composer-history`, `dsh-background-agents`, `dsh-session-pin`, `dsh-session-sync` |
-| 安全 Security | `dsh-auto-review`, `dsh-permission-rules`, `dsh-defend`, `dsh-mask`, `dsh-skill-pack-security` |
-| 质量 Quality | `dsh-doublecheck`, `dsh-data-quality`, `dsh-test-drive`, `dsh-score` |
-| 研究 Research | `dsh-industry-research`, `dsh-fund-research`, `dsh-research-report`, `dsh-library` |
-| 集成 Integration | `dsh-mcp-panel`, `dsh-claude-move`, `dsh-lsp-actions`, `dsh-local-ai`, `dsh-github`, `dsh-translate` |
+| 基建 Infra | `dsh-scaffold` |
+| 质量 Quality | `dsh-check-pack`, `dsh-doublecheck`, `dsh-data-quality`, `dsh-test-drive`, `dsh-score`, `dsh-fmea-table-check`, `dsh-ota-review-check`, `dsh-pipeline-check`, `dsh-ppap-check`, `dsh-repair-order-qc`, `dsh-review-reply-check`, `dsh-spc-gbt-adapter`, `dsh-warranty-calc` |
+| 生态 Ecosystem | `dsh-community-bench`, `dsh-primer`, `dsh-cert-mcp`, `dsh-clinic`, `dsh-codemod` |
+| 会话 Session | `dsh-memento`, `dsh-checkpoint-rewind`, `dsh-composer-history`, `dsh-background-agents`, `dsh-session-pin`, `dsh-session-sync`, `dsh-team-rooms` |
+| 研究 Research | `dsh-phocinae`, `dsh-industry-research`, `dsh-fund-research`, `dsh-research-report`, `dsh-library`, `dsh-essay-rubric-check`, `dsh-learning-gap-check`, `dsh-nsfc-form-check`, `dsh-paper-doc-adapter`, `dsh-policy-brief-draft` |
+| 集成 Integration | `dsh-phone-inbox`, `dsh-mcp-panel`, `dsh-claude-move`, `dsh-lsp-actions`, `dsh-local-ai`, `dsh-github-bot`, `dsh-autotier`, `dsh-laya`, `dsh-reach`, `dsh-dida` |
+| 安全 Security | `dsh-auto-review`, `dsh-permission-rules`, `dsh-defend`, `dsh-mask`, `dsh-security-pack`, `dsh-aqua-input-check`, `dsh-drill-script-check`, `dsh-emergency-plan`, `dsh-hazchem-check`, `dsh-hidden-risk-map`, `dsh-power-loss-split`, `dsh-power-ticket-check` |
+| 开发工具 Developer tools | `dsh-param-repair` |
 | 桌面 Desktop | `dsh-click`, `dsh-talk`, `dsh-draw` |
 | 观测 Observability | `dsh-budget`, `dsh-observe`, `dsh-fast` |
 | UX | `dsh-output-styles` |
-| 生态 Ecosystem | `dsh-plugin-guide` |
+| 公文 Official Documents | `dsh-archive-check`, `dsh-gongwen-flow-check`, `dsh-gongwen-word-check` |
+| 招投标 Tendering | `dsh-bid-ca-precheck`, `dsh-bid-qual-check`, `dsh-contract-stance`, `dsh-protest-deadline`, `dsh-rulefile-check`, `dsh-tender-extract`, `dsh-tender-matrix` |
+| 外贸 Foreign Trade | `dsh-customs-doc-check`, `dsh-demurrage-ledger`, `dsh-export-ctl-check`, `dsh-forecast-penalty`, `dsh-hs-classify`, `dsh-lc-doc-check`, `dsh-origin-rvc-check`, `dsh-railway-window` |
+| 工程建设 Construction | `dsh-eia-guide-check`, `dsh-guard-plan-qc`, `dsh-hazplan-check`, `dsh-permit-report-check`, `dsh-safety-brief-check`, `dsh-site-log-check`, `dsh-soilwater-check` |
+| 法律 Legal | `dsh-evidence-check`, `dsh-lawcite-adapter`, `dsh-pleading-draft` |
+| 医疗 Medical | `dsh-icd-rule-check`, `dsh-medrec-qc`, `dsh-nurse-record-check` |
+| 治理 Governance | `dsh-soe-decision-check`, `dsh-sop-sync-check` |
 
 Los recuentos por grupo los imprime la compuerta (`node scripts/verify-portal.mjs`) en lugar de congelarse aquí.
 

@@ -2,7 +2,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-plugin-portal-hero-zh-dark.webp">
-  <img src="docs/assets/dsh-plugin-portal-hero-zh-light.webp" width="100%" alt="dsh-plugin-portal：一页看完整插件生态 —— data/repos.json 提供 99 张 roster 卡片、分入 17 个分组，index.html 单文件内联 CSS/JS、无构建步骤，verify.html 只读查验 attestationId 记录，计数由 node scripts/verify-portal.mjs 打印">
+  <img src="docs/assets/dsh-plugin-portal-hero-zh-light.webp" width="100%" alt="dsh-plugin-portal：一页看完整插件生态 —— data/repos.json 提供 99 张 roster 卡片、分入 18 个分组，index.html 单文件内联 CSS/JS、无构建步骤，verify.html 只读查验 attestationId 记录，计数由 node scripts/verify-portal.mjs 打印">
 </picture>
 
 # dsh-plugin-portal
@@ -26,7 +26,7 @@
 
 ## 生态总览
 
-![dsh-plugin-portal 真实终端运行 node scripts/verify-portal.mjs（纯净检出）：check 1、2、4、9 通过，check 6 因无同级 dsh-plugin-kit 而 skip，计数显示 99 条 roster、17 个分组，最后 verify-portal: PASS](docs/assets/dsh-plugin-portal-demo.gif)
+![dsh-plugin-portal 真实终端运行 node scripts/verify-portal.mjs（纯净检出）：check 1、2、4、9 通过，check 6 因无同级 dsh-plugin-kit 而 skip，计数显示 99 条 roster、18 个分组，最后 verify-portal: PASS](docs/assets/dsh-plugin-portal-demo.gif)
 
 *动图：从纯净检出执行 node scripts/verify-portal.mjs 于 2026-11-21 的复跑——check 6 因同级 dsh-plugin-kit 缺席而 skip，与 CI runner 上完全一致。真实 stdout，不联网。*
 
@@ -42,16 +42,24 @@
 
 | 分组 Group | 内容 Contents |
 |---|---|
-| 基建 Infra | `dsh-plugin-kit` |
-| 会话 Session | `dsh-memento`, `dsh-checkpoint-rewind`, `dsh-composer-history`, `dsh-background-agents`, `dsh-session-pin`, `dsh-session-sync` |
-| 安全 Security | `dsh-auto-review`, `dsh-permission-rules`, `dsh-defend`, `dsh-mask`, `dsh-skill-pack-security` |
-| 质量 Quality | `dsh-doublecheck`, `dsh-data-quality`, `dsh-test-drive`, `dsh-score` |
-| 研究 Research | `dsh-industry-research`, `dsh-fund-research`, `dsh-research-report`, `dsh-library` |
-| 集成 Integration | `dsh-mcp-panel`, `dsh-claude-move`, `dsh-lsp-actions`, `dsh-local-ai`, `dsh-github`, `dsh-translate` |
+| 基建 Infra | `dsh-scaffold` |
+| 质量 Quality | `dsh-check-pack`, `dsh-doublecheck`, `dsh-data-quality`, `dsh-test-drive`, `dsh-score`, `dsh-fmea-table-check`, `dsh-ota-review-check`, `dsh-pipeline-check`, `dsh-ppap-check`, `dsh-repair-order-qc`, `dsh-review-reply-check`, `dsh-spc-gbt-adapter`, `dsh-warranty-calc` |
+| 生态 Ecosystem | `dsh-community-bench`, `dsh-primer`, `dsh-cert-mcp`, `dsh-clinic`, `dsh-codemod` |
+| 会话 Session | `dsh-memento`, `dsh-checkpoint-rewind`, `dsh-composer-history`, `dsh-background-agents`, `dsh-session-pin`, `dsh-session-sync`, `dsh-team-rooms` |
+| 研究 Research | `dsh-phocinae`, `dsh-industry-research`, `dsh-fund-research`, `dsh-research-report`, `dsh-library`, `dsh-essay-rubric-check`, `dsh-learning-gap-check`, `dsh-nsfc-form-check`, `dsh-paper-doc-adapter`, `dsh-policy-brief-draft` |
+| 集成 Integration | `dsh-phone-inbox`, `dsh-mcp-panel`, `dsh-claude-move`, `dsh-lsp-actions`, `dsh-local-ai`, `dsh-github-bot`, `dsh-autotier`, `dsh-laya`, `dsh-reach`, `dsh-dida` |
+| 安全 Security | `dsh-auto-review`, `dsh-permission-rules`, `dsh-defend`, `dsh-mask`, `dsh-security-pack`, `dsh-aqua-input-check`, `dsh-drill-script-check`, `dsh-emergency-plan`, `dsh-hazchem-check`, `dsh-hidden-risk-map`, `dsh-power-loss-split`, `dsh-power-ticket-check` |
+| 开发工具 Developer tools | `dsh-param-repair` |
 | 桌面 Desktop | `dsh-click`, `dsh-talk`, `dsh-draw` |
 | 观测 Observability | `dsh-budget`, `dsh-observe`, `dsh-fast` |
 | UX | `dsh-output-styles` |
-| 生态 Ecosystem | `dsh-plugin-guide` |
+| 公文 Official Documents | `dsh-archive-check`, `dsh-gongwen-flow-check`, `dsh-gongwen-word-check` |
+| 招投标 Tendering | `dsh-bid-ca-precheck`, `dsh-bid-qual-check`, `dsh-contract-stance`, `dsh-protest-deadline`, `dsh-rulefile-check`, `dsh-tender-extract`, `dsh-tender-matrix` |
+| 外贸 Foreign Trade | `dsh-customs-doc-check`, `dsh-demurrage-ledger`, `dsh-export-ctl-check`, `dsh-forecast-penalty`, `dsh-hs-classify`, `dsh-lc-doc-check`, `dsh-origin-rvc-check`, `dsh-railway-window` |
+| 工程建设 Construction | `dsh-eia-guide-check`, `dsh-guard-plan-qc`, `dsh-hazplan-check`, `dsh-permit-report-check`, `dsh-safety-brief-check`, `dsh-site-log-check`, `dsh-soilwater-check` |
+| 法律 Legal | `dsh-evidence-check`, `dsh-lawcite-adapter`, `dsh-pleading-draft` |
+| 医疗 Medical | `dsh-icd-rule-check`, `dsh-medrec-qc`, `dsh-nurse-record-check` |
+| 治理 Governance | `dsh-soe-decision-check`, `dsh-sop-sync-check` |
 
 每组数量由门禁（`node scripts/verify-portal.mjs`）打印，而不是冻结在这里。
 
