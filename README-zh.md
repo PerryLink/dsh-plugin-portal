@@ -8,6 +8,10 @@
 
 ## Docs
 
+![dsh-plugin-portal 真实终端运行](docs/assets/dsh-plugin-portal-demo.gif)
+
+*本仓库一次真实运行的动图回放。*
+
 [Privacy](PRIVACY.md) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
 
 
