@@ -26,11 +26,11 @@
 
 ## Panorama del ecosistema
 
-![dsh-plugin-portal: ejecución real en terminal de node scripts/verify-portal.mjs en un checkout limpio — las comprobaciones 1, 2, 4 y 9 pasan, la 6 se omite sin el checkout hermano dsh-plugin-kit, los recuentos muestran 99 entradas en 18 grupos y la compuerta termina con verify-portal: PASS](docs/assets/dsh-plugin-portal-demo.gif)
+![dsh-plugin-portal: ejecución real en terminal de node scripts/verify-portal.mjs en un checkout limpio — las comprobaciones 1, 2, 4 y 9 pasan, la 6 se omite sin el checkout hermano dsh-kit, los recuentos muestran 99 entradas en 18 grupos y la compuerta termina con verify-portal: PASS](docs/assets/dsh-plugin-portal-demo.gif)
 
-*Animación: node scripts/verify-portal.mjs re-ejecutado el 2026-11-21 desde un checkout limpio — la comprobación 6 se omite porque falta el checkout hermano dsh-plugin-kit, exactamente como en un runner de CI. stdout real, sin llamadas de red.*
+*Animación: node scripts/verify-portal.mjs re-ejecutado el 2026-11-21 desde un checkout limpio — la comprobación 6 se omite porque falta el checkout hermano dsh-kit, exactamente como en un runner de CI. stdout real, sin llamadas de red.*
 
-El portal renderiza el registro completo que sigue [`dsh-plugin-kit/data/repos.json`](https://github.com/PerryLink/dsh-plugin-kit/blob/main/data/repos.json): cada entrada del roster, los plugins más el repositorio de infraestructura `dsh-plugin-kit`. Cada tarjeta muestra el **nombre** del repo, una **descripción de una línea**, su **número de ★**, dos **badges de shields.io** (estrellas de GitHub en vivo + un badge de valoración estático) y el **enlace a GitHub**. Los recuentos autoritativos los imprime `node scripts/verify-portal.mjs` (el README evita deliberadamente congelar una cifra).
+El portal renderiza el registro completo que sigue [`dsh-kit/data/repos.json`](https://github.com/PerryLink/dsh-kit/blob/main/data/repos.json): cada entrada del roster, los plugins más el repositorio de infraestructura `dsh-scaffold`. Cada tarjeta muestra el **nombre** del repo, una **descripción de una línea**, su **número de ★**, dos **badges de shields.io** (estrellas de GitHub en vivo + un badge de valoración estático) y el **enlace a GitHub**. Los recuentos autoritativos los imprime `node scripts/verify-portal.mjs` (el README evita deliberadamente congelar una cifra).
 [![dshfind](https://dshfind.com/api/badge/PerryLink/dsh-plugin-portal?metric=downloads)](https://dshfind.com/plugins/PerryLink/dsh-plugin-portal?ref=badge)
 [![npm](https://img.shields.io/npm/v/dsh-plugin-portal)](https://www.npmjs.com/package/dsh-plugin-portal)
 [![CI](https://github.com/PerryLink/dsh-plugin-portal/actions/workflows/ci.yml/badge.svg)](https://github.com/PerryLink/dsh-plugin-portal/actions/workflows/ci.yml)
@@ -68,7 +68,7 @@ Los recuentos por grupo los imprime la compuerta (`node scripts/verify-portal.mj
 Los P0 — lo imprescindible del portal — están **hechos** para la v1:
 
 - **Portal estático v1** ✅ — `index.html` es un solo archivo con CSS/JS en línea; cero dependencias externas de runtime.
-- **Sincronización de la fuente de datos** ✅ — `data/repos.json` es una copia literal de `dsh-plugin-kit/data/repos.json` (más una nota de sincronización `_source`).
+- **Sincronización de la fuente de datos** ✅ — `data/repos.json` es una copia literal de `dsh-kit/data/repos.json` (más una nota de sincronización `_source`).
 - **Render agrupado** ✅ — una tarjeta por entrada del roster, agrupadas por `group`.
 - **Badges de calidad** ✅ — `img.shields.io/github/stars/…` en vivo + un badge de valoración estático por tarjeta; sin autohosting.
 
@@ -76,7 +76,7 @@ P1/P2 (ya incluidos en esta revisión): chips de nivel de adopción de solo lect
 
 ## Señales de calidad
 
-Cada tarjeta muestra dos señales de calidad: el **número de ★** del roster (instantánea sincronizada) y un **badge de estrellas en vivo** de GitHub vía shields.io. El badge de valoración estático refleja el valor `star` sincronizado (`n/a` para `dsh-plugin-kit`, que no publica número de estrellas). Estas señales son solo de visualización — el portal no puntúa nada por su cuenta; la puntuación vive en `dsh-plugin-kit`.
+Cada tarjeta muestra dos señales de calidad: el **número de ★** del roster (instantánea sincronizada) y un **badge de estrellas en vivo** de GitHub vía shields.io. El badge de valoración estático refleja el valor `star` sincronizado. Estas señales son solo de visualización — el portal no puntúa nada por su cuenta; la puntuación vive en `dsh-kit`.
 
 ## Visualización de solo lectura
 
@@ -92,7 +92,7 @@ El portal **solo muestra** niveles de adopción y atestaciones: **no calcula un 
 dsh-plugin-portal/
 ├── index.html              # 单文件门户（内联 CSS/JS，无外部运行时依赖）
 ├── verify.html             # attestationId 只读查验（零依赖、静态、无构建）
-├── data/repos.json         # 从 dsh-plugin-kit/data/repos.json 复制的清单（见 _source 注释）
+├── data/repos.json         # 从 dsh-kit/data/repos.json 复制的清单（见 _source 注释）
 ├── data/levels.json        # 三层采用深度的只读投影（不计算 level）
 ├── data/attestations.json  # 标准仓 publish/attestations/index.json 的镜像
 ├── scripts/verify-portal.mjs # 零依赖门禁（roster + levels + attestations + pages）
@@ -100,7 +100,7 @@ dsh-plugin-portal/
 └── README.md               # 本文件
 ```
 
-`data/repos.json` **no** es la fuente de la verdad: [`dsh-plugin-kit/data/repos.json`](https://github.com/PerryLink/dsh-plugin-kit/blob/main/data/repos.json) es el dueño del roster y de los recuentos de estrellas. Para refrescar este portal, vuelve a copiar ese archivo sobre `data/repos.json`.
+`data/repos.json` **no** es la fuente de la verdad: [`dsh-kit/data/repos.json`](https://github.com/PerryLink/dsh-kit/blob/main/data/repos.json) es el dueño del roster y de los recuentos de estrellas. Para refrescar este portal, vuelve a copiar ese archivo sobre `data/repos.json`.
 
 ## Vista previa local
 
@@ -127,7 +127,7 @@ Imprime los recuentos autoritativos (entradas, grupos, por grupo) y comprueba:
 3. que el script en línea de `index.html` parsea (`new vm.Script`) y se ejecuta bajo un stub de DOM;
 4. que cada entrada del roster tiene un blurb en `DESCRIPTIONS` y cada grupo una etiqueta `GROUP_EN` — una entrada cuyo blurb aún no haya llegado debe estar registrada en `PENDING_DESCRIPTION` (la allowlist deliberada), o la compuerta falla;
 5. que los badges de estrellas derivan su owner de `repo.github`, incluidos los owners de terceros (`pan17/dsh-wechat`) — sin ningún owner codificado a mano;
-6. que `data/repos.json` es una **copia literal** del `dsh-plugin-kit/data/repos.json` upstream salvo `_source`, y que el sha256 registrado en `_source` sigue coincidiendo con ese archivo. En un runner sin el checkout hermano del kit (CI) esta comprobación informa `skip` en lugar de fallar, así que la compuerta nunca se pone en rojo por un motivo que el runner no pueda arreglar;
+6. que `data/repos.json` es una **copia literal** del `dsh-kit/data/repos.json` upstream salvo `_source`, y que el sha256 registrado en `_source` sigue coincidiendo con ese archivo. En un runner sin el checkout hermano del kit (CI) esta comprobación informa `skip` en lugar de fallar, así que la compuerta nunca se pone en rojo por un motivo que el runner no pueda arreglar;
 7. que el README no congela un recuento;
 8. que `data/levels.json` solo referencia repos del roster, cubre todos ellos, usa el enum de estado por nivel, y cada estado `runtime` / `measured` / `manual` lleva un `evidence.url` `https` — `not-run` nunca se asciende a aprobado;
 9. que `data/attestations.json` replica el índice del repositorio estándar con `attestationId`s únicos, fechas `expiresAt` reales, detalle para cada registro y **ningún campo `level` en ninguna parte** (un grado es ortogonal a un nivel de adopción);

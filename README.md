@@ -26,17 +26,17 @@
 
 ## 生态总览 / Ecosystem overview
 
-![dsh-plugin-portal: a real terminal run of node scripts/verify-portal.mjs on a bare checkout — checks 1, 2, 4 and 9 pass, check 6 skips without the sibling dsh-plugin-kit, counts show 99 entries in 18 groups, and the gate ends with verify-portal: PASS](docs/assets/dsh-plugin-portal-demo.gif)
+![dsh-plugin-portal: a real terminal run of node scripts/verify-portal.mjs on a bare checkout — checks 1, 2, 4 and 9 pass, check 6 skips without the sibling dsh-kit, counts show 99 entries in 18 groups, and the gate ends with verify-portal: PASS](docs/assets/dsh-plugin-portal-demo.gif)
 
-*Animated: node scripts/verify-portal.mjs re-run on 2026-11-21 from a bare checkout — check 6 skips because the sibling dsh-plugin-kit is absent, exactly as on a CI runner. Real stdout, no network calls.*
+*Animated: node scripts/verify-portal.mjs re-run on 2026-11-21 from a bare checkout — check 6 skips because the sibling dsh-kit is absent, exactly as on a CI runner. Real stdout, no network calls.*
 
-The portal renders the complete registry tracked by [`dsh-plugin-kit/data/repos.json`](https://github.com/PerryLink/dsh-plugin-kit/blob/main/data/repos.json): every roster entry, plugins plus the `dsh-plugin-kit` infra repo. Every card shows the repo **name**, a **one-line description**, its **★ count**, two **shields.io badges** (live GitHub stars + a static rating badge), and the **GitHub link**. The authoritative counts are printed by `node scripts/verify-portal.mjs` (the README deliberately carries no frozen number).
+The portal renders the complete registry tracked by [`dsh-kit/data/repos.json`](https://github.com/PerryLink/dsh-kit/blob/main/data/repos.json): every roster entry, plugins plus the `dsh-scaffold` infra repo. Every card shows the repo **name**, a **one-line description**, its **★ count**, two **shields.io badges** (live GitHub stars + a static rating badge), and the **GitHub link**. The authoritative counts are printed by `node scripts/verify-portal.mjs` (the README deliberately carries no frozen number).
 [![dshfind](https://dshfind.com/api/badge/PerryLink/dsh-plugin-portal?metric=downloads)](https://dshfind.com/plugins/PerryLink/dsh-plugin-portal?ref=badge)
 [![npm](https://img.shields.io/npm/v/dsh-plugin-portal)](https://www.npmjs.com/package/dsh-plugin-portal)
 [![CI](https://github.com/PerryLink/dsh-plugin-portal/actions/workflows/ci.yml/badge.svg)](https://github.com/PerryLink/dsh-plugin-portal/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
-本门户渲染 `dsh-plugin-kit/data/repos.json` 记录的完整清单（全部插件仓库 + `dsh-plugin-kit` 基建仓库）。每张卡片展示仓库**名称**、**一句话简介**、**★ 数**、两个 **shields.io 徽章**（实时 GitHub stars + 静态评分徽章）与 **GitHub 链接**。**权威计数由 `node scripts/verify-portal.mjs` 打印**，README 刻意不写死数字。
+本门户渲染 `dsh-kit/data/repos.json` 记录的完整清单（全部插件仓库 + `dsh-scaffold` 基建仓库）。每张卡片展示仓库**名称**、**一句话简介**、**★ 数**、两个 **shields.io 徽章**（实时 GitHub stars + 静态评分徽章）与 **GitHub 链接**。**权威计数由 `node scripts/verify-portal.mjs` 打印**，README 刻意不写死数字。
 
 ## 分组导航 / Grouped navigation
 
@@ -70,7 +70,7 @@ Per-group counts are printed by the gate (`node scripts/verify-portal.mjs`) inst
 P0 — the foundational must-haves for the portal — are **done** for v1:
 
 - **静态门户 v1** ✅ — `index.html` is a single file with inline CSS/JS; zero external runtime dependencies.
-- **数据源同步** ✅ — `data/repos.json` is a verbatim copy of `dsh-plugin-kit/data/repos.json` (plus a `_source` sync note).
+- **数据源同步** ✅ — `data/repos.json` is a verbatim copy of `dsh-kit/data/repos.json` (plus a `_source` sync note).
 - **分组渲染 ✅** — one card per roster entry, grouped by `group`.
 - **质量徽章** ✅ — live `img.shields.io/github/stars/…` + a static rating badge per card; no self-hosting.
 
@@ -78,7 +78,7 @@ P1/P2 (landed in this revision): read-only adoption-level chips, the mirrored at
 
 ## 质量信号 / Quality signals
 
-Each card surfaces two quality signals: the **★ count** from the roster (synced snapshot) and a **live stars badge** from GitHub via shields.io. The static rating badge reflects the synced `star` value (`n/a` for `dsh-plugin-kit`, which ships no star count). These signals are display-only — the portal does no scoring of its own; scoring lives in `dsh-plugin-kit`.
+Each card surfaces two quality signals: the **★ count** from the roster (synced snapshot) and a **live stars badge** from GitHub via shields.io. The static rating badge reflects the synced `star` value. These signals are display-only — the portal does no scoring of its own; scoring lives in `dsh-kit`.
 
 ## 只读展示 / Read-only display
 
@@ -94,7 +94,7 @@ The portal **only displays** adoption levels and attestations: it does **not com
 dsh-plugin-portal/
 ├── index.html              # 单文件门户（内联 CSS/JS，无外部运行时依赖）
 ├── verify.html             # attestationId 只读查验（零依赖、静态、无构建）
-├── data/repos.json         # 从 dsh-plugin-kit/data/repos.json 复制的清单（见 _source 注释）
+├── data/repos.json         # 从 dsh-kit/data/repos.json 复制的清单（见 _source 注释）
 ├── data/levels.json        # 三层采用深度的只读投影（不计算 level）
 ├── data/attestations.json  # 标准仓 publish/attestations/index.json 的镜像
 ├── scripts/verify-portal.mjs # 零依赖门禁（roster + levels + attestations + pages）
@@ -102,7 +102,7 @@ dsh-plugin-portal/
 └── README.md               # 本文件
 ```
 
-`data/repos.json` is **not** the source of truth: [`dsh-plugin-kit/data/repos.json`](https://github.com/PerryLink/dsh-plugin-kit/blob/main/data/repos.json) owns the roster and star counts. To refresh this portal, re-copy that file over `data/repos.json`.
+`data/repos.json` is **not** the source of truth: [`dsh-kit/data/repos.json`](https://github.com/PerryLink/dsh-kit/blob/main/data/repos.json) owns the roster and star counts. To refresh this portal, re-copy that file over `data/repos.json`.
 
 ## 本地预览 / Local preview
 
@@ -129,7 +129,7 @@ It prints the authoritative counts (entries, groups, per-group) and checks:
 3. the inline script in `index.html` parses (`new vm.Script`) and runs under a DOM stub;
 4. every roster entry has a blurb in `DESCRIPTIONS` and every group a `GROUP_EN` label — an entry whose blurb has not landed yet must be registered in `PENDING_DESCRIPTION` (the deliberate allowlist), otherwise the gate fails;
 5. star badges derive their owner from `repo.github`, third-party owners included (`pan17/dsh-wechat`) — no hardcoded owner;
-6. `data/repos.json` is a **verbatim copy** of the upstream `dsh-plugin-kit/data/repos.json` except for `_source`, and the sha256 recorded in `_source` still matches that file. On a runner without the sibling kit checkout (CI) this check reports `skip` rather than failing, so the gate is never red for a reason the runner cannot fix;
+6. `data/repos.json` is a **verbatim copy** of the upstream `dsh-kit/data/repos.json` except for `_source`, and the sha256 recorded in `_source` still matches that file. On a runner without the sibling kit checkout (CI) this check reports `skip` rather than failing, so the gate is never red for a reason the runner cannot fix;
 7. the README does not freeze a count;
 8. `data/levels.json` only references roster repos, covers every one of them, uses the per-level status enum, and every `runtime` / `measured` / `manual` status carries an `https` `evidence.url` — `not-run` is never upgraded to a pass;
 9. `data/attestations.json` mirrors the standard-repository index with unique `attestationId`s, real `expiresAt` dates, detail for every record, and **no `level` field anywhere** (a grade is orthogonal to an adoption level);

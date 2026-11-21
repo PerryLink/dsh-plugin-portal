@@ -26,11 +26,11 @@
 
 ## पारिस्थितिकी अवलोकन
 
-![dsh-plugin-portal: साफ़ checkout पर node scripts/verify-portal.mjs का असली टर्मिनल रन — check 1, 2, 4, 9 पास, sibling dsh-plugin-kit न होने पर check 6 skip, गिनती 99 प्रविष्टियाँ 18 समूहों में, और अंत verify-portal: PASS](docs/assets/dsh-plugin-portal-demo.gif)
+![dsh-plugin-portal: साफ़ checkout पर node scripts/verify-portal.mjs का असली टर्मिनल रन — check 1, 2, 4, 9 पास, sibling dsh-kit न होने पर check 6 skip, गिनती 99 प्रविष्टियाँ 18 समूहों में, और अंत verify-portal: PASS](docs/assets/dsh-plugin-portal-demo.gif)
 
-*एनिमेशन: 2026-11-21 को साफ़ checkout से node scripts/verify-portal.mjs का दोबारा रन — sibling dsh-plugin-kit न होने से check 6 skip होता है, ठीक CI runner की तरह। असली stdout, कोई नेटवर्क कॉल नहीं।*
+*एनिमेशन: 2026-11-21 को साफ़ checkout से node scripts/verify-portal.mjs का दोबारा रन — sibling dsh-kit न होने से check 6 skip होता है, ठीक CI runner की तरह। असली stdout, कोई नेटवर्क कॉल नहीं।*
 
-पोर्टल [`dsh-plugin-kit/data/repos.json`](https://github.com/PerryLink/dsh-plugin-kit/blob/main/data/repos.json) द्वारा ट्रैक की गई पूरी रजिस्ट्री रेंडर करता है: हर roster प्रविष्टि, प्लगइन के साथ `dsh-plugin-kit` इंफ्रा रिपॉज़िटरी। हर कार्ड में repo का **नाम**, **एक-पंक्ति विवरण**, **★ संख्या**, दो **shields.io बैज** (GitHub की लाइव स्टार्स + एक स्थिर रेटिंग बैज) और **GitHub लिंक** दिखता है। प्रामाणिक गिनतियाँ `node scripts/verify-portal.mjs` छापता है (README जान-बूझकर कोई स्थिर संख्या नहीं रखता)।
+पोर्टल [`dsh-kit/data/repos.json`](https://github.com/PerryLink/dsh-kit/blob/main/data/repos.json) द्वारा ट्रैक की गई पूरी रजिस्ट्री रेंडर करता है: हर roster प्रविष्टि, प्लगइन के साथ `dsh-scaffold` इंफ्रा रिपॉज़िटरी। हर कार्ड में repo का **नाम**, **एक-पंक्ति विवरण**, **★ संख्या**, दो **shields.io बैज** (GitHub की लाइव स्टार्स + एक स्थिर रेटिंग बैज) और **GitHub लिंक** दिखता है। प्रामाणिक गिनतियाँ `node scripts/verify-portal.mjs` छापता है (README जान-बूझकर कोई स्थिर संख्या नहीं रखता)।
 [![dshfind](https://dshfind.com/api/badge/PerryLink/dsh-plugin-portal?metric=downloads)](https://dshfind.com/plugins/PerryLink/dsh-plugin-portal?ref=badge)
 [![npm](https://img.shields.io/npm/v/dsh-plugin-portal)](https://www.npmjs.com/package/dsh-plugin-portal)
 [![CI](https://github.com/PerryLink/dsh-plugin-portal/actions/workflows/ci.yml/badge.svg)](https://github.com/PerryLink/dsh-plugin-portal/actions/workflows/ci.yml)
@@ -68,7 +68,7 @@
 P0 — पोर्टल की बुनियादी अनिवार्यताएँ — v1 के लिए **पूरी** हैं:
 
 - **स्थिर पोर्टल v1** ✅ — `index.html` इनलाइन CSS/JS के साथ एक ही फ़ाइल है; शून्य बाहरी runtime निर्भरताएँ।
-- **डेटा स्रोत सिंक** ✅ — `data/repos.json` `dsh-plugin-kit/data/repos.json` की ज्यों की त्यों प्रतिलिपि है (साथ में `_source` सिंक टिप्पणी)।
+- **डेटा स्रोत सिंक** ✅ — `data/repos.json` `dsh-kit/data/repos.json` की ज्यों की त्यों प्रतिलिपि है (साथ में `_source` सिंक टिप्पणी)।
 - **समूहित रेंडर** ✅ — हर roster प्रविष्टि के लिए एक कार्ड, `group` से समूहित।
 - **गुणवत्ता बैज** ✅ — लाइव `img.shields.io/github/stars/…` + प्रति कार्ड एक स्थिर रेटिंग बैज; कोई self-hosting नहीं।
 
@@ -76,7 +76,7 @@ P1/P2 (इस संस्करण में आ चुके): केवल-�
 
 ## गुणवत्ता संकेत
 
-हर कार्ड दो गुणवत्ता संकेत दिखाता है: roster से **★ संख्या** (सिंक किया स्नैपशॉट) और shields.io के ज़रिए GitHub से **लाइव स्टार्स बैज**। स्थिर रेटिंग बैज सिंक किए गए `star` मान को दर्शाता है (`dsh-plugin-kit` के लिए `n/a`, जो स्टार संख्या नहीं देता)। ये संकेत केवल प्रदर्शन के लिए हैं — पोर्टल अपनी ओर से कोई स्कोरिंग नहीं करता; स्कोरिंग `dsh-plugin-kit` में है।
+हर कार्ड दो गुणवत्ता संकेत दिखाता है: roster से **★ संख्या** (सिंक किया स्नैपशॉट) और shields.io के ज़रिए GitHub से **लाइव स्टार्स बैज**। स्थिर रेटिंग बैज सिंक किए गए `star` मान को दर्शाता है। ये संकेत केवल प्रदर्शन के लिए हैं — पोर्टल अपनी ओर से कोई स्कोरिंग नहीं करता; स्कोरिंग `dsh-kit` में है।
 
 ## केवल-पढ़न प्रदर्शन
 
@@ -92,7 +92,7 @@ P1/P2 (इस संस्करण में आ चुके): केवल-�
 dsh-plugin-portal/
 ├── index.html              # 单文件门户（内联 CSS/JS，无外部运行时依赖）
 ├── verify.html             # attestationId 只读查验（零依赖、静态、无构建）
-├── data/repos.json         # 从 dsh-plugin-kit/data/repos.json 复制的清单（见 _source 注释）
+├── data/repos.json         # 从 dsh-kit/data/repos.json 复制的清单（见 _source 注释）
 ├── data/levels.json        # 三层采用深度的只读投影（不计算 level）
 ├── data/attestations.json  # 标准仓 publish/attestations/index.json 的镜像
 ├── scripts/verify-portal.mjs # 零依赖门禁（roster + levels + attestations + pages）
@@ -100,7 +100,7 @@ dsh-plugin-portal/
 └── README.md               # 本文件
 ```
 
-`data/repos.json` **सत्य का स्रोत नहीं** है: [`dsh-plugin-kit/data/repos.json`](https://github.com/PerryLink/dsh-plugin-kit/blob/main/data/repos.json) roster और स्टार गिनतियों का स्वामी है। इस पोर्टल को रिफ़्रेश करने के लिए उसी फ़ाइल को फिर से `data/repos.json` पर कॉपी करें।
+`data/repos.json` **सत्य का स्रोत नहीं** है: [`dsh-kit/data/repos.json`](https://github.com/PerryLink/dsh-kit/blob/main/data/repos.json) roster और स्टार गिनतियों का स्वामी है। इस पोर्टल को रिफ़्रेश करने के लिए उसी फ़ाइल को फिर से `data/repos.json` पर कॉपी करें।
 
 ## स्थानीय पूर्वावलोकन
 
@@ -127,7 +127,7 @@ npm test                         # same gate, no install step (package.json has 
 3. कि `index.html` का इनलाइन स्क्रिप्ट parse होता है (`new vm.Script`) और DOM stub के नीचे चलता है;
 4. कि हर roster प्रविष्टि का `DESCRIPTIONS` में blurb है और हर समूह का `GROUP_EN` लेबल — जिस प्रविष्टि का blurb अभी नहीं आया वह `PENDING_DESCRIPTION` (जान-बूझकर allowlist) में दर्ज होनी चाहिए, वरना गेट फ़ेल होता है;
 5. कि स्टार्स बैज अपना owner `repo.github` से लेते हैं, तीसरे-पक्ष के owners सहित (`pan17/dsh-wechat`) — कोई hardcoded owner नहीं;
-6. कि `data/repos.json` upstream `dsh-plugin-kit/data/repos.json` की **ज्यों की त्यों प्रतिलिपि** है सिवाय `_source` के, और `_source` में दर्ज sha256 अभी भी उस फ़ाइल से मेल खाता है। sibling kit checkout के बिना चलने वाले runner (CI) पर यह जाँच फ़ेल होने के बजाय `skip` बताती है, इसलिए गेट कभी उस कारण लाल नहीं होता जिसे runner ठीक नहीं कर सकता;
+6. कि `data/repos.json` upstream `dsh-kit/data/repos.json` की **ज्यों की त्यों प्रतिलिपि** है सिवाय `_source` के, और `_source` में दर्ज sha256 अभी भी उस फ़ाइल से मेल खाता है। sibling kit checkout के बिना चलने वाले runner (CI) पर यह जाँच फ़ेल होने के बजाय `skip` बताती है, इसलिए गेट कभी उस कारण लाल नहीं होता जिसे runner ठीक नहीं कर सकता;
 7. कि README कोई गिनती स्थिर नहीं करता;
 8. कि `data/levels.json` केवल roster repos का संदर्भ देता है, उन सबको कवर करता है, प्रति-स्तर status enum का उपयोग करता है, और हर `runtime` / `measured` / `manual` status के साथ एक `https` `evidence.url` है — `not-run` को कभी पास तक उन्नत नहीं किया जाता;
 9. कि `data/attestations.json` मानक-रिपॉज़िटरी सूचकांक को अनूठे `attestationId`s, असली `expiresAt` तिथियों, हर रिकॉर्ड के लिए विवरण और **कहीं भी कोई `level` फ़ील्ड नहीं** के साथ मिरर करता है (ग्रेड adoption level के लिए ऑर्थोगोनल है);

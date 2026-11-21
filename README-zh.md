@@ -26,11 +26,11 @@
 
 ## 生态总览
 
-![dsh-plugin-portal 真实终端运行 node scripts/verify-portal.mjs（纯净检出）：check 1、2、4、9 通过，check 6 因无同级 dsh-plugin-kit 而 skip，计数显示 99 条 roster、18 个分组，最后 verify-portal: PASS](docs/assets/dsh-plugin-portal-demo.gif)
+![dsh-plugin-portal 真实终端运行 node scripts/verify-portal.mjs（纯净检出）：check 1、2、4、9 通过，check 6 因无同级 dsh-kit 而 skip，计数显示 99 条 roster、18 个分组，最后 verify-portal: PASS](docs/assets/dsh-plugin-portal-demo.gif)
 
-*动图：从纯净检出执行 node scripts/verify-portal.mjs 于 2026-11-21 的复跑——check 6 因同级 dsh-plugin-kit 缺席而 skip，与 CI runner 上完全一致。真实 stdout，不联网。*
+*动图：从纯净检出执行 node scripts/verify-portal.mjs 于 2026-11-21 的复跑——check 6 因同级 dsh-kit 缺席而 skip，与 CI runner 上完全一致。真实 stdout，不联网。*
 
-门户渲染 [`dsh-plugin-kit/data/repos.json`](https://github.com/PerryLink/dsh-plugin-kit/blob/main/data/repos.json) 记录的完整清单：每一个名册条目，即全部插件加上 `dsh-plugin-kit` 基建仓库。每张卡片展示仓库**名称**、**一句话简介**、**★ 数**、两个 **shields.io 徽章**（实时 GitHub 星标 + 一个静态评分徽章）以及 **GitHub 链接**。权威计数由 `node scripts/verify-portal.mjs` 打印（README 刻意不携带任何冻结数字）。
+门户渲染 [`dsh-kit/data/repos.json`](https://github.com/PerryLink/dsh-kit/blob/main/data/repos.json) 记录的完整清单：每一个名册条目，即全部插件加上 `dsh-scaffold` 基建仓库。每张卡片展示仓库**名称**、**一句话简介**、**★ 数**、两个 **shields.io 徽章**（实时 GitHub 星标 + 一个静态评分徽章）以及 **GitHub 链接**。权威计数由 `node scripts/verify-portal.mjs` 打印（README 刻意不携带任何冻结数字）。
 [![dshfind](https://dshfind.com/api/badge/PerryLink/dsh-plugin-portal?metric=downloads)](https://dshfind.com/plugins/PerryLink/dsh-plugin-portal?ref=badge)
 [![npm](https://img.shields.io/npm/v/dsh-plugin-portal)](https://www.npmjs.com/package/dsh-plugin-portal)
 [![CI](https://github.com/PerryLink/dsh-plugin-portal/actions/workflows/ci.yml/badge.svg)](https://github.com/PerryLink/dsh-plugin-portal/actions/workflows/ci.yml)
@@ -68,7 +68,7 @@
 P0——门户的基础必备项——在 v1 已**完成**：
 
 - **静态门户 v1** ✅ —— `index.html` 是单文件，内联 CSS/JS；零外部运行时依赖。
-- **数据源同步** ✅ —— `data/repos.json` 是 `dsh-plugin-kit/data/repos.json` 的逐字副本（外加一条 `_source` 同步说明）。
+- **数据源同步** ✅ —— `data/repos.json` 是 `dsh-kit/data/repos.json` 的逐字副本（外加一条 `_source` 同步说明）。
 - **分组渲染** ✅ —— 每个名册条目一张卡片，按 `group` 分组。
 - **质量徽章** ✅ —— 实时 `img.shields.io/github/stars/…` + 每张卡片一个静态评分徽章；无自托管。
 
@@ -76,7 +76,7 @@ P1/P2（本次修订已落地）：只读的采用等级 chips、镜像的认证
 
 ## 质量信号
 
-每张卡片展示两个质量信号：来自名册（同步快照）的 **★ 数**，以及经 shields.io 从 GitHub 取到的**实时星标徽章**。静态评分徽章反映同步的 `star` 值（`dsh-plugin-kit` 没有星数，显示 `n/a`）。这些信号只用于展示——门户自身不做任何评分；评分住在 `dsh-plugin-kit`。
+每张卡片展示两个质量信号：来自名册（同步快照）的 **★ 数**，以及经 shields.io 从 GitHub 取到的**实时星标徽章**。静态评分徽章反映同步的 `star` 值。这些信号只用于展示——门户自身不做任何评分；评分住在 `dsh-kit`。
 
 ## 只读展示
 
@@ -92,7 +92,7 @@ P1/P2（本次修订已落地）：只读的采用等级 chips、镜像的认证
 dsh-plugin-portal/
 ├── index.html              # 单文件门户（内联 CSS/JS，无外部运行时依赖）
 ├── verify.html             # attestationId 只读查验（零依赖、静态、无构建）
-├── data/repos.json         # 从 dsh-plugin-kit/data/repos.json 复制的清单（见 _source 注释）
+├── data/repos.json         # 从 dsh-kit/data/repos.json 复制的清单（见 _source 注释）
 ├── data/levels.json        # 三层采用深度的只读投影（不计算 level）
 ├── data/attestations.json  # 标准仓 publish/attestations/index.json 的镜像
 ├── scripts/verify-portal.mjs # 零依赖门禁（roster + levels + attestations + pages）
@@ -100,7 +100,7 @@ dsh-plugin-portal/
 └── README.md               # 本文件
 ```
 
-`data/repos.json` **不是**真源：[`dsh-plugin-kit/data/repos.json`](https://github.com/PerryLink/dsh-plugin-kit/blob/main/data/repos.json) 拥有名册与星数。要刷新本门户，重新把那个文件复制到 `data/repos.json`。
+`data/repos.json` **不是**真源：[`dsh-kit/data/repos.json`](https://github.com/PerryLink/dsh-kit/blob/main/data/repos.json) 拥有名册与星数。要刷新本门户，重新把那个文件复制到 `data/repos.json`。
 
 ## 本地预览
 
@@ -127,7 +127,7 @@ npm test                         # same gate, no install step (package.json has 
 3. `index.html` 的内联脚本可以解析（`new vm.Script`）并在 DOM stub 下运行；
 4. 每个名册条目在 `DESCRIPTIONS` 中都有简介，每个分组都有 `GROUP_EN` 标签——简介尚未落地的条目必须登记在 `PENDING_DESCRIPTION`（刻意的允许清单）中，否则门禁失败；
 5. 星标徽章的 owner 从 `repo.github` 派生，包含第三方 owner（`pan17/dsh-wechat`）——没有硬编码的 owner；
-6. `data/repos.json` 除 `_source` 外是上游 `dsh-plugin-kit/data/repos.json` 的**逐字副本**，且 `_source` 中记录的 sha256 仍与该文件匹配。在没有同级 kit 检出的 runner（CI）上，该检查报告 `skip` 而不是失败，因此门禁绝不会因为 runner 无法修复的原因变红；
+6. `data/repos.json` 除 `_source` 外是上游 `dsh-kit/data/repos.json` 的**逐字副本**，且 `_source` 中记录的 sha256 仍与该文件匹配。在没有同级 kit 检出的 runner（CI）上，该检查报告 `skip` 而不是失败，因此门禁绝不会因为 runner 无法修复的原因变红；
 7. README 不冻结任何计数；
 8. `data/levels.json` 只引用名册仓库、覆盖其中每一个、使用每级的状态枚举，且每个 `runtime` / `measured` / `manual` 状态都带 `https` 的 `evidence.url`——`not-run` 绝不升级为通过；
 9. `data/attestations.json` 镜像标准仓库索引，`attestationId` 唯一、`expiresAt` 为真实日期、每条记录都有详情，并且**任何地方都没有 `level` 字段**（等级与采用深度正交）；
