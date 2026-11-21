@@ -1,4 +1,15 @@
+<div align="center">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-plugin-portal-hero-en-dark.webp">
+  <img src="docs/assets/dsh-plugin-portal-hero-en-light.webp" width="100%" alt="dsh-plugin-portal: one static page for the plugin ecosystem — data/repos.json feeds 99 roster cards in 17 groups, index.html ships inline CSS/JS with no build step, verify.html looks up attestationId records read-only, and node scripts/verify-portal.mjs prints the counts">
+</picture>
+
 # dsh-plugin-portal
+
+[English](README.md) · [简体中文](README-zh.md) · [Español](README-es.md) · [Português](README-pt.md) · [हिन्दी](README-hi.md)
+
+</div>
 
 **PerryLink DSH 插件门户** — a zero-dependency static portal that renders the @perrylink DeepSeek Harness plugin ecosystem as grouped cards, one page, no build step, no runtime framework.
 
@@ -6,11 +17,18 @@
 
 ---
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-plugin-portal-flow-v5-dark.svg">
+  <img src="docs/assets/dsh-plugin-portal-flow-v5-light.svg" width="100%" alt="Structure diagram for dsh-plugin-portal: dsh-kit/data/repos.json is copied verbatim into data/repos.json (with a _source sha256); index.html renders 99 grouped cards while verify.html reads data/levels.json and the mirrored data/attestations.json offline; node scripts/verify-portal.mjs runs checks 1 to 11 with zero dependencies and prints the counts">
+</picture>
+
+*Structure: data/repos.json → index.html / verify.html → gate. Labels inside the diagram are real paths, file names and the gate command, so one picture serves all five languages.*
+
 ## 生态总览 / Ecosystem overview
 
-![dsh-plugin-portal: real terminal run](docs/assets/dsh-plugin-portal-demo.gif)
+![dsh-plugin-portal: a real terminal run of node scripts/verify-portal.mjs on a bare checkout — checks 1, 2, 4 and 9 pass, check 6 skips without the sibling dsh-plugin-kit, counts show 99 entries in 17 groups, and the gate ends with verify-portal: PASS](docs/assets/dsh-plugin-portal-demo.gif)
 
-*Animated replay of a real run recorded in this repository.*
+*Animated: node scripts/verify-portal.mjs re-run on 2026-11-21 from a bare checkout — check 6 skips because the sibling dsh-plugin-kit is absent, exactly as on a CI runner. Real stdout, no network calls.*
 
 The portal renders the complete registry tracked by [`dsh-plugin-kit/data/repos.json`](https://github.com/PerryLink/dsh-plugin-kit/blob/main/data/repos.json): every roster entry, plugins plus the `dsh-plugin-kit` infra repo. Every card shows the repo **name**, a **one-line description**, its **★ count**, two **shields.io badges** (live GitHub stars + a static rating badge), and the **GitHub link**. The authoritative counts are printed by `node scripts/verify-portal.mjs` (the README deliberately carries no frozen number).
 [![dshfind](https://dshfind.com/api/badge/PerryLink/dsh-plugin-portal?metric=downloads)](https://dshfind.com/plugins/PerryLink/dsh-plugin-portal?ref=badge)
