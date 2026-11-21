@@ -1,5 +1,5 @@
 {
-  "_source": "Synced copy of dsh-kit/data/repos.json (https://github.com/PerryLink/dsh-kit). That file is the source of truth for the roster, the star counts and each entry's maintenance `status`; re-copy it here to refresh this portal. Upstream sha256: 946bc0ab6dc1f4325d11d584ec170e31dc6b7025d569d6b305335362c6f2daad (recorded 2026-11-04; scripts/verify-portal.mjs fails when the upstream file no longer hashes to this, or when the two rosters stop matching verbatim).",
+  "_source": "Synced copy of dsh-kit/data/repos.json (https://github.com/PerryLink/dsh-kit). That file is the source of truth for the roster, the star counts and each entry's maintenance `status`; re-copy it here to refresh this portal. Upstream sha256: 5adf0022c8d435f5e855780948a44bc4f73dd3c31debd9329a3c6d7085934735 (recorded 2026-11-21; scripts/verify-portal.mjs fails when the upstream file no longer hashes to this, or when the two rosters stop matching verbatim).",
   "updatedAt": "2026-11-04",
   "note": "Registry of the @perrylink dsh plugin ecosystem (99 plugin repos + this kit). Star counts re-read on 2026-10-19; `status` re-derived on 2026-10-31. `status` is the maintenance state: active, frozen (no new features, only real breakages fixed), retired (npm-deprecated). The roster rule is the same one plugins.txt uses: `dsh.bundle.patch` declared, published, and not retired.",
   "repos": [
@@ -236,9 +236,9 @@
       "status": "active"
     },
     {
-      "name": "dsh-translate",
-      "github": "https://github.com/PerryLink/dsh-translate",
-      "group": "集成",
+      "name": "dsh-param-repair",
+      "github": "https://github.com/PerryLink/dsh-param-repair",
+      "group": "开发工具",
       "role": "plugin",
       "star": 14,
       "status": "active"

@@ -1,6 +1,6 @@
 {
   "schema": "dsh-portal-levels/1",
-  "updatedAt": "2026-11-04",
+  "updatedAt": "2026-11-21",
   "nonOfficial": true,
   "disclaimer": "非官方 · 非认证 · 非安全审计 — 层级 = 采用深度，不是质量等级；A–D 是另一条轴，不可换算。过期或撤回的证据必须显示 stale / withdrawn，不显示为通过。",
   "source": {
@@ -478,7 +478,7 @@
       }
     },
     {
-      "repo": "dsh-translate",
+      "repo": "dsh-param-repair",
       "entry": {
         "status": "not-run",
         "evidence": null
